@@ -24,16 +24,22 @@ export function dateFormatter(dateString) {
   return formattedDate;
 }
 
-export function getInitials(fullName) {
-  const names = fullName.split(" ");
+/* export function getInitials(name) {
+  if (!name) return ""; // Manejo de caso undefined o null
+  const names = names.split(" ");//
 
   const initials = names.slice(0, 2).map((name) => name[0].toUpperCase());
 
   const initialsStr = initials.join("");
 
   return initialsStr;
+} */
+  export function getInitials(name) {
+    if (!name) return "";  // Manejo seguro si name es undefined o vacío
+    
+    const names = name.split(" ");  // Ahora no habrá error en la línea 29
+    return names.map(word => word[0]?.toUpperCase()).join("");
 }
-
 export const PRIOTITYSTYELS = {
   high: "text-red-600",
   medium: "text-yellow-600",
