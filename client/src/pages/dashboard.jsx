@@ -108,7 +108,7 @@ const UserTable = ({ users }) => {
       <td className='py-2'>
         <div className='flex items-center gap-3'>
           <div className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-violet-700'>
-            <span className='text-center'>{getInitials(user?.name)}</span>
+            <span className='text-center'>{getInitials(user?.data?.name)}</span>
           </div>
 
           <div>

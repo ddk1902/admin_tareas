@@ -7,25 +7,25 @@ const taskSchema = new Schema(
     priority: {
       type: String,
       default: "normal",
-      enum: ["high", "medium", "normal", "low"],
+      enum: ["alta", "media", "normal", "baja"],
     },
     stage: {
       type: String,
       default: "todo",
-      enum: ["todo", "in progress", "completed"],
+      enum: ["pendiente", "en progreso", "completada"],
     },
     activities: [
       {
         type: {
           type: String,
-          default: "assigned",
+          default: "asignada",
           enum: [
-            "assigned",
-            "started",
-            "in progress",
+            "asignada",
+            "iniciada",
+            "en progreso",
             "bug",
-            "completed",
-            "commented",
+            "completada",
+            "comentada",
           ],
         },
         activity: String,
