@@ -12,7 +12,7 @@ export const registerUser = async (req, res) => {
     if (userExist) {
       return res.status(400).json({
         status: false,
-        message: "User already exists",
+        message: "Este usuario ya existe",
       });
     }
 
@@ -34,7 +34,7 @@ export const registerUser = async (req, res) => {
     } else {
       return res
         .status(400)
-        .json({ status: false, message: "Invalid user data" });
+        .json({ status: false, message: "Datos de usuario inválidos" });
     }
   } catch (error) {
     console.log(error);
@@ -51,13 +51,13 @@ export const loginUser = async (req, res) => {
     if (!user) {
       return res
         .status(401)
-        .json({ status: false, message: "Invalid email or password." });
+        .json({ status: false, message: "Email o contraseña inválidos." });
     }
 
     if (!user?.isActive) {
       return res.status(401).json({
         status: false,
-        message: "User account has been deactivated, contact the administrator",
+        message: "La cuenta ha sido desactivada por el administrador",
       });
     }
 
@@ -66,13 +66,13 @@ export const loginUser = async (req, res) => {
     if (user && isMatch) {
       createJWT(res, user._id);
 
-      user.password = undefined;
+      user.password = "";
 
       res.status(200).json(user);
     } else {
       return res
         .status(401)
-        .json({ status: false, message: "Invalid email or password" });
+        .json({ status: false, message: "Email o contraseña incorrectos" });
     }
   } catch (error) {
     console.log(error);
@@ -87,7 +87,7 @@ export const logoutUser = async (req, res) => {
       expires: new Date(0),
     });
 
-    res.status(200).json({ message: "Logout successful" });
+    res.status(200).json({ message: "Sesión cerrada!" });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
@@ -146,11 +146,11 @@ export const updateUserProfile = async (req, res) => {
 
       res.status(201).json({
         status: true,
-        message: "Profile Updated Successfully.",
+        message: "Perfil actualizado..!.",
         user: updatedUser,
       });
     } else {
-      res.status(404).json({ status: false, message: "User not found" });
+      res.status(404).json({ status: false, message: "Usuario no encontrado" });
     }
   } catch (error) {
     console.log(error);
@@ -178,7 +178,7 @@ export const markNotificationRead = async (req, res) => {
       );
     }
 
-    res.status(201).json({ status: true, message: "Done" });
+    res.status(201).json({ status: true, message: "Realizado..!" });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
@@ -200,10 +200,10 @@ export const changeUserPassword = async (req, res) => {
 
       res.status(201).json({
         status: true,
-        message: `Password chnaged successfully.`,
+        message: `Contraseña cambiada exitosamente.`,
       });
     } else {
-      res.status(404).json({ status: false, message: "User not found" });
+      res.status(404).json({ status: false, message: "Usuario no encontrado" });
     }
   } catch (error) {
     console.log(error);
@@ -224,12 +224,12 @@ export const activateUserProfile = async (req, res) => {
 
       res.status(201).json({
         status: true,
-        message: `User account has been ${
-          user?.isActive ? "activated" : "disabled"
+        message: `La cuenta de usuario ha sido ${
+          user?.isActive ? "activada" : "desactivada"
         }`,
       });
     } else {
-      res.status(404).json({ status: false, message: "User not found" });
+      res.status(404).json({ status: false, message: "Usuario no encontrado" });
     }
   } catch (error) {
     console.log(error);
@@ -245,7 +245,7 @@ export const deleteUserProfile = async (req, res) => {
 
     res
       .status(200)
-      .json({ status: true, message: "User deleted successfully" });
+      .json({ status: true, message: "Usuario eliminado con éxito.!" });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
