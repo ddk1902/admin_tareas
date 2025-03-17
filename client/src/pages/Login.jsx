@@ -3,9 +3,11 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Textbox from "../components/Textbox";
 import Button from "../components/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../redux/slices/api/authApiSlice";
 import { toast } from "sonner";
+import Loading from "../components/Loader";
+import { setCredentials } from "../redux/slices/authSlice";
 
 const Login = () => {
   const { user } = useSelector((state) => state.auth);
@@ -16,6 +18,7 @@ const Login = () => {
   } = useForm();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [login, { isLoading }] = useLoginMutation();
 
 
@@ -25,10 +28,8 @@ const Login = () => {
       const result = await login(data).unwrap();
       //if (result) {
         console.log(result);
-       // navigate("/dashboard");
-      //} else {      
-       // console.log("Por favor inténtelo de nuevo..!");
-      //}
+        dispatch(setCredentials(result));
+        navigate("/");
     } catch (error) {
       console.log(error)
       toast.error(error?.data?.message || "Algo salío mal..!");
@@ -98,15 +99,18 @@ const Login = () => {
                 error={errors.password ? errors.password.message : ""}
               />
 
-              <span className='text-sm text-gray-500 hover:text-blue-600 hover:underline cursor-pointer'>
+              <span className='text-sm text-gray-500 hover:text-red-600 hover:underline cursor-pointer'>
                 Ha olvidado su contraseña?
               </span>
 
-              <Button
+              {isLoading ?(
+                <Loading/>
+              ):( <Button
                 type='submit'
                 label='Ingresar'
                 className='w-full h-10 bg-red-700 text-white rounded-full'
               />
+                )}
             </div>
           </form>
         </div>
