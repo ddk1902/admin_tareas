@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Textbox from "../components/Textbox";
 import Button from "../components/Button";
 import { useSelector } from "react-redux";
+import { useLoginMutation } from "../redux/slices/api/authApiSlice";
+import { toast } from "sonner";
 
 const Login = () => {
   const { user } = useSelector((state) => state.auth);
@@ -14,9 +16,23 @@ const Login = () => {
   } = useForm();
 
   const navigate = useNavigate();
+  const [login, { isLoading }] = useLoginMutation();
+
+
 
   const submitHandler = async (data) => {
-    console.log("submit");
+    try {
+      const result = await login(data).unwrap();
+      //if (result) {
+        console.log(result);
+       // navigate("/dashboard");
+      //} else {      
+       // console.log("Por favor inténtelo de nuevo..!");
+      //}
+    } catch (error) {
+      console.log(error)
+      toast.error(error?.data?.message || "Algo salío mal..!");
+    }
   };
 
   useEffect(() => {
