@@ -8,19 +8,19 @@ export const createTask = async (req, res) => {
 
     const { title, team, stage, date, priority, assets } = req.body;
 
-    let text = "New task has been assigned to you";
+    let text = "Una nueva tarea le ha sido asignada a usted";
     if (team?.length > 1) {
-      text = text + ` and ${team?.length - 1} others.`;
+      text = text + ` y ${team?.length - 1} otros.`;
     }
 
     text =
       text +
-      ` The task priority is set a ${priority} priority, so check and act accordingly. The task date is ${new Date(
+      ` La tarea es de  ${priority} prioridad, por favor verifique. La fecha de la tareas es: ${new Date(
         date
-      ).toDateString()}. Thank you!!!`;
+      ).toDateString()}. Gracias!!!`;
 
     const activity = {
-      type: "assigned",
+      type: "asignada",
       activity: text,
       by: userId,
     };
@@ -43,7 +43,7 @@ export const createTask = async (req, res) => {
 
     res
       .status(200)
-      .json({ status: true, task, message: "Task created successfully." });
+      .json({ status: true, task, message: "Tarea creada con éxito.!." });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
@@ -58,7 +58,7 @@ export const duplicateTask = async (req, res) => {
 
     const newTask = await Task.create({
       ...task,
-      title: task.title + " - Duplicate",
+      title: task.title + " - Duplicado",
     });
 
     newTask.team = task.team;
@@ -70,16 +70,14 @@ export const duplicateTask = async (req, res) => {
     await newTask.save();
 
     //alert users of the task
-    let text = "New task has been assigned to you";
+    let text = "Una nueva tarea le ha sido asignada a usted";
     if (task.team.length > 1) {
-      text = text + ` and ${task.team.length - 1} others.`;
+      text = text + ` y ${task.team.length - 1} otros.`;
     }
 
     text =
       text +
-      ` The task priority is set a ${
-        task.priority
-      } priority, so check and act accordingly. The task date is ${task.date.toDateString()}. Thank you!!!`;
+      ` La tarea es de  ${priority} prioridad, por favor verifique. La fecha de la tareas es: ${task.date.toDateString()}. Gracias!!!`;
 
     await Notice.create({
       team: task.team,
@@ -89,7 +87,7 @@ export const duplicateTask = async (req, res) => {
 
     res
       .status(200)
-      .json({ status: true, message: "Task duplicated successfully." });
+      .json({ status: true, message: "Tarea duplicada exitosamente." });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
@@ -116,7 +114,7 @@ export const postTaskActivity = async (req, res) => {
 
     res
       .status(200)
-      .json({ status: true, message: "Activity posted successfully." });
+      .json({ status: true, message: "Actividad publicada con éxito." });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
@@ -188,7 +186,7 @@ export const dashboardStatistics = async (req, res) => {
 
     res.status(200).json({
       status: true,
-      message: "Successfully",
+      message: "Realizado..!",
       ...summary,
     });
   } catch (error) {
@@ -270,7 +268,7 @@ export const createSubTask = async (req, res) => {
 
     res
       .status(200)
-      .json({ status: true, message: "SubTask added successfully." });
+      .json({ status: true, message: "Sub-Tarea agregada!." });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
@@ -295,7 +293,7 @@ export const updateTask = async (req, res) => {
 
     res
       .status(200)
-      .json({ status: true, message: "Task duplicated successfully." });
+      .json({ status: true, message: "Tarea duplicada exitosamente." });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
@@ -314,7 +312,7 @@ export const trashTask = async (req, res) => {
 
     res.status(200).json({
       status: true,
-      message: `Task trashed successfully.`,
+      message: `Tarea eliminada!.`,
     });
   } catch (error) {
     console.log(error);
@@ -345,7 +343,7 @@ export const deleteRestoreTask = async (req, res) => {
 
     res.status(200).json({
       status: true,
-      message: `Operation performed successfully.`,
+      message: `Operación realizada exitosamente.`,
     });
   } catch (error) {
     console.log(error);
