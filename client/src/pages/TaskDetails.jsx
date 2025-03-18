@@ -28,15 +28,15 @@ const assets = [
 ];
 
 const ICONS = {
-  high: <MdKeyboardDoubleArrowUp />,
-  medium: <MdKeyboardArrowUp />,
-  low: <MdKeyboardArrowDown />,
+  alta: <MdKeyboardDoubleArrowUp />,
+  media: <MdKeyboardArrowUp />,
+  baja: <MdKeyboardArrowDown />,
 };
 
 const bgColor = {
-  high: "bg-red-200",
-  medium: "bg-yellow-200",
-  low: "bg-blue-200",
+  alta: "bg-red-200",
+  media: "bg-yellow-200",
+  baja: "bg-green-200",
 };
 
 const TABS = [
@@ -45,17 +45,17 @@ const TABS = [
 ];
 
 const TASKTYPEICON = {
-  commented: (
+  comentada: (
     <div className='w-10 h-10 rounded-full bg-gray-500 flex items-center justify-center text-white'>
       <MdOutlineMessage />,
     </div>
   ),
-  started: (
+  comenzada: (
     <div className='w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white'>
       <FaThumbsUp size={20} />
     </div>
   ),
-  assigned: (
+  asignada: (
     <div className='w-6 h-6 flex items-center justify-center rounded-full bg-gray-500 text-white'>
       <FaUser size={14} />
     </div>
@@ -65,12 +65,12 @@ const TASKTYPEICON = {
       <FaBug size={24} />
     </div>
   ),
-  completed: (
+  completada: (
     <div className='w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white'>
       <MdOutlineDoneAll size={24} />
     </div>
   ),
-  "in progress": (
+  "en progreso": (
     <div className='w-8 h-8 flex items-center justify-center rounded-full bg-violet-600 text-white'>
       <GrInProgress size={16} />
     </div>
@@ -78,12 +78,12 @@ const TASKTYPEICON = {
 };
 
 const act_types = [
-  "Started",
-  "Completed",
-  "In Progress",
-  "Commented",
+  "Comenzada",
+  "Completada",
+  "En progreso",
+  "Comentada",
   "Bug",
-  "Assigned",
+  "Asignada",
 ];
 
 const TaskDetails = () => {
@@ -111,7 +111,7 @@ const TaskDetails = () => {
                     )}
                   >
                     <span className='text-lg'>{ICONS[task?.priority]}</span>
-                    <span className='uppercase'>{task?.priority} Priority</span>
+                    <span className='uppercase'>{task?.priority} Prioridad</span>
                   </div>
 
                   <div className={clsx("flex items-center gap-2")}>
@@ -131,21 +131,21 @@ const TaskDetails = () => {
 
                 <div className='flex items-center gap-8 p-4 border-y border-gray-200'>
                   <div className='space-x-2'>
-                    <span className='font-semibold'>Assets :</span>
+                    <span className='font-semibold'>Recursos: :</span>
                     <span>{task?.assets?.length}</span>
                   </div>
 
                   <span className='text-gray-400'>|</span>
 
                   <div className='space-x-2'>
-                    <span className='font-semibold'>Sub-Task :</span>
+                    <span className='font-semibold'>Sub-Tarea :</span>
                     <span>{task?.subTasks?.length}</span>
                   </div>
                 </div>
 
                 <div className='space-y-4 py-6'>
                   <p className='text-gray-600 font-semibold test-sm'>
-                    TASK TEAM
+                    Responsables
                   </p>
                   <div className='space-y-3'>
                     {task?.team?.map((m, index) => (
@@ -174,7 +174,7 @@ const TaskDetails = () => {
 
                 <div className='space-y-4 py-6'>
                   <p className='text-gray-500 font-semibold text-sm'>
-                    SUB-TASKS
+                    SUB-TAREAS
                   </p>
                   <div className='space-y-8'>
                     {task?.subTasks?.map((el, index) => (
@@ -203,7 +203,7 @@ const TaskDetails = () => {
               </div>
               {/* RIGHT */}
               <div className='w-full md:w-1/2 space-y-8'>
-                <p className='text-lg font-semibold'>ASSETS</p>
+                <p className='text-lg font-semibold'>RECURSOS</p>
 
                 <div className='w-full grid grid-cols-2 gap-4'>
                   {task?.assets?.map((el, index) => (
@@ -262,7 +262,7 @@ const Activities = ({ activity, id }) => {
   return (
     <div className='w-full flex gap-10 2xl:gap-20 min-h-screen px-10 py-8 bg-white shadow rounded-md justify-between overflow-y-auto'>
       <div className='w-full md:w-1/2'>
-        <h4 className='text-gray-600 font-semibold text-lg mb-5'>Activities</h4>
+        <h4 className='text-gray-600 font-semibold text-lg mb-5'>Actividades</h4>
 
         <div className='w-full'>
           {activity?.map((el, index) => (
@@ -277,7 +277,7 @@ const Activities = ({ activity, id }) => {
 
       <div className='w-full md:w-1/3'>
         <h4 className='text-gray-600 font-semibold text-lg mb-5'>
-          Add Activity
+          Agregar actividad
         </h4>
         <div className='w-full flex flex-wrap gap-5'>
           {act_types.map((item, index) => (
