@@ -6,13 +6,13 @@ import { Dialog } from "@headlessui/react";
 import Textbox from "./Textbox";
 import Loading from "./Loader";
 import Button from "./Button";
-
+import { useRegisterMutation } from "../redux/slices/api/authApiSlice";
+import { toast } from "sonner";
 const AddUser = ({ open, setOpen, userData }) => {
   let defaultValues = userData ?? {};
   const { user } = useSelector((state) => state.auth);
 
-  const isLoading = false,
-    isUpdating = false;
+  const isUpdating=false;
 
   const {
     register,
@@ -20,7 +20,22 @@ const AddUser = ({ open, setOpen, userData }) => {
     formState: { errors },
   } = useForm({ defaultValues });
 
-  const handleOnSubmit = () => {};
+  const [AddNewUser, {isLoading}]=useRegisterMutation();
+
+  const handleOnSubmit = async (data) => {
+    try {
+      if(userData){
+      }else{
+        const result= await AddNewUser({...data,password:data.email}).unwrap();
+        toast.success("Usuario agregado exitosamente");
+      }
+      setTimeout(() => {
+        setOpen(false);
+      },2000);
+    } catch (error) {
+      toast.error("Ocurrió un error al agregar usuario");
+    }
+  };
 
   return (
     <>
@@ -30,51 +45,51 @@ const AddUser = ({ open, setOpen, userData }) => {
             as='h2'
             className='text-base font-bold leading-6 text-gray-900 mb-4'
           >
-            {userData ? "UPDATE PROFILE" : "ADD NEW USER"}
+            {userData ? "Actualizar perfil" : "Agregar un nuevo usuario"}
           </Dialog.Title>
           <div className='mt-2 flex flex-col gap-6'>
             <Textbox
-              placeholder='Full name'
+              placeholder=''
               type='text'
               name='name'
-              label='Full Name'
+              label='Nombre completo'
               className='w-full rounded'
               register={register("name", {
-                required: "Full name is required!",
+                required: "Campo obligatorio.!",
               })}
               error={errors.name ? errors.name.message : ""}
             />
             <Textbox
-              placeholder='Title'
+              placeholder=''
               type='text'
               name='title'
-              label='Title'
+              label='Título'
               className='w-full rounded'
               register={register("title", {
-                required: "Title is required!",
+                required: "Campo obligatorio.!",
               })}
               error={errors.title ? errors.title.message : ""}
             />
             <Textbox
-              placeholder='Email Address'
+              placeholder=''
               type='email'
               name='email'
-              label='Email Address'
+              label='Email'
               className='w-full rounded'
               register={register("email", {
-                required: "Email Address is required!",
+                required: "Campo obligatorio.!",
               })}
               error={errors.email ? errors.email.message : ""}
             />
 
             <Textbox
-              placeholder='Role'
+              placeholder=''
               type='text'
               name='role'
-              label='Role'
+              label='Rol'
               className='w-full rounded'
               register={register("role", {
-                required: "User role is required!",
+                required: "Campo obligatorio.!",
               })}
               error={errors.role ? errors.role.message : ""}
             />
@@ -88,15 +103,15 @@ const AddUser = ({ open, setOpen, userData }) => {
             <div className='py-3 mt-4 sm:flex sm:flex-row-reverse'>
               <Button
                 type='submit'
-                className='bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto'
-                label='Submit'
+                className='bg-red-600 px-8 text-sm font-semibold text-white hover:bg-green-700  sm:w-auto'
+                label='Guardar'
               />
 
               <Button
                 type='button'
                 className='bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto'
                 onClick={() => setOpen(false)}
-                label='Cancel'
+                label='Cancelar'
               />
             </div>
           )}
