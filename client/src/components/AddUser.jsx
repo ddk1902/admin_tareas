@@ -103,13 +103,13 @@ const AddUser = ({ open, setOpen, userData }) => {
             <div className='py-3 mt-4 sm:flex sm:flex-row-reverse'>
               <Button
                 type='submit'
-                className='bg-red-600 px-8 text-sm font-semibold text-white hover:bg-green-700  sm:w-auto'
+                className='bg-yellow-600 px-8 text-sm font-semibold text-white hover:bg-green-700  sm:w-auto sm:ml-4'
                 label='Guardar'
               />
-
+               
               <Button
                 type='button'
-                className='bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto'
+                className='bg-red-700 px-5 text-sm font-semibold text-white hover:bg-red-700 sm:w-auto'
                 onClick={() => setOpen(false)}
                 label='Cancelar'
               />
