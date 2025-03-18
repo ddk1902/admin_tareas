@@ -24,7 +24,7 @@ const Navbar = () => {
 
           <input
             type='text'
-            placeholder='Search....'
+            placeholder='Búsqueda'
             className='flex-1 outline-none bg-transparent placeholder:text-gray-500 text-gray-800'
           />
         </div>
