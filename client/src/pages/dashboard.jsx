@@ -17,17 +17,17 @@ import UserInfo from "../components/UserInfo";
 
 const TaskTable = ({ tasks }) => {
   const ICONS = {
-    high: <MdKeyboardDoubleArrowUp />,
-    medium: <MdKeyboardArrowUp />,
-    low: <MdKeyboardArrowDown />,
+    alta: <MdKeyboardDoubleArrowUp />,
+    media: <MdKeyboardArrowUp />,
+    baja: <MdKeyboardArrowDown />,
   };
 
   const TableHeader = () => (
     <thead className='border-b border-gray-300 '>
       <tr className='text-black text-left'>
-        <th className='py-2'>Task Title</th>
-        <th className='py-2'>Priority</th>
-        <th className='py-2'>Team</th>
+        <th className='py-2'>Nombre de la tarea</th>
+        <th className='py-2'>Prioridad</th>
+        <th className='py-2'>Responsables</th>
         <th className='py-2 hidden md:block'>Created At</th>
       </tr>
     </thead>
@@ -96,9 +96,9 @@ const UserTable = ({ users }) => {
   const TableHeader = () => (
     <thead className='border-b border-gray-300 '>
       <tr className='text-black  text-left'>
-        <th className='py-2'>Full Name</th>
-        <th className='py-2'>Status</th>
-        <th className='py-2'>Created At</th>
+        <th className='py-2'>Nombre</th>
+        <th className='py-2'>Estado</th>
+        <th className='py-2'>registrado:</th>
       </tr>
     </thead>
   );
@@ -151,28 +151,28 @@ const Dashboard = () => {
   const stats = [
     {
       _id: "1",
-      label: "TOTAL TASK",
+      label: "Total de tareas",
       total: summary?.totalTasks || 0,
       icon: <FaNewspaper />,
       bg: "bg-[#1d4ed8]",
     },
     {
       _id: "2",
-      label: "COMPLTED TASK",
+      label: "Completadas",
       total: totals["completed"] || 0,
       icon: <MdAdminPanelSettings />,
       bg: "bg-[#0f766e]",
     },
     {
       _id: "3",
-      label: "TASK IN PROGRESS ",
+      label: "En progreso ",
       total: totals["in progress"] || 0,
       icon: <LuClipboardEdit />,
       bg: "bg-[#f59e0b]",
     },
     {
       _id: "4",
-      label: "TODOS",
+      label: "Pendientes",
       total: totals["todo"],
       icon: <FaArrowsToDot />,
       bg: "bg-[#be185d]" || 0,
@@ -209,7 +209,7 @@ const Dashboard = () => {
 
       <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
         <h4 className='text-xl text-gray-600 font-semibold'>
-          Chart by Priority
+          Gráfico de tareas
         </h4>
         <Chart />
       </div>
