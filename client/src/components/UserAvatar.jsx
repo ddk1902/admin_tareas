@@ -8,6 +8,8 @@ import { getInitials } from "../utils";
 import { useLogoutMutation } from "../redux/slices/api/authApiSlice";
 import {Toaster as toast} from "sonner";
 import { logout } from "../redux/slices/authSlice";
+import AddUser from "./AddUser";
+import ChangePassword from "./changePassword";
 
 const UserAvatar = () => {
   const [open, setOpen] = useState(false);
@@ -59,7 +61,7 @@ const UserAvatar = () => {
                       className='text-gray-700 group flex w-full items-center rounded-md px-2 py-2 text-base'
                     >
                       <FaUser className='mr-2' aria-hidden='true' />
-                      Profile
+                      Perfil
                     </button>
                   )}
                 </Menu.Item>
@@ -71,7 +73,7 @@ const UserAvatar = () => {
                       className={`tetx-gray-700 group flex w-full items-center rounded-md px-2 py-2 text-base`}
                     >
                       <FaUserLock className='mr-2' aria-hidden='true' />
-                      Change Password
+                      Cambiar contraseña
                     </button>
                   )}
                 </Menu.Item>
@@ -83,7 +85,7 @@ const UserAvatar = () => {
                       className={`text-red-600 group flex w-full items-center rounded-md px-2 py-2 text-base`}
                     >
                       <IoLogOutOutline className='mr-2' aria-hidden='true' />
-                      Logout
+                      Cerrar Sesión
                     </button>
                   )}
                 </Menu.Item>
@@ -92,6 +94,8 @@ const UserAvatar = () => {
           </Transition>
         </Menu>
       </div>
+      <AddUser open={open} setOpen={setOpen} userData={user}/>
+      <ChangePassword open={openPassword} setOpen={setOpenPassword} />
     </>
   );
 };
