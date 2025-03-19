@@ -21,19 +21,20 @@ const Users = () => {
   const [userAction]=useUserActionMutation();
 
 
-
   const userActionHandler = async () => {
     try {
       const result=await userAction({
         isActive:!selected.isActive,
         id:selected?._id
       });
-     refetch();
+     
      toast.success(result?.data?.message || "Usuario actualizado correctamente");
+     window.location.reload();
      setSelected(null);
      setTimeout(() => {
       setOpenAction(false);
      }, 500);
+     window.location.reload();
     } catch (error) {
       console.log(error);
       toast.error(error?.data?.message || "An error occurredAlgo salió mal..por favor verifique");
@@ -45,13 +46,13 @@ const Users = () => {
   const deleteHandler = async () => {
     try {
       const result=await deleteUser(selected)
-     refetch();
+     
       toast.success(res?.data?.message || "Usuario eliminado correctamente");  
      setSelected(null);
      setTimeout(() => {
       setOpenAction(false);
      }, 500);
-
+     window.location.reload();
     } catch (error) {
       console.log(err);
       toast.error(err?.data?.message || "An error occurredAlgo salió mal..por favor verifique");
