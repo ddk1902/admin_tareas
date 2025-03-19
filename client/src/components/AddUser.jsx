@@ -55,7 +55,7 @@ const AddUser = ({ open, setOpen, userData }) => {
         const result = await updateUser({ id: userData._id, ...formData }).unwrap();
         console.log("Respuesta del backend al actualizar usuario:", result);
         toast.success(result?.message || "Usuario actualizado exitosamente");
-
+        window.location.reload();
         if (userData._id === user._id) {
           dispatch(setCredentials({ ...result.user }));
         }
@@ -64,6 +64,7 @@ const AddUser = ({ open, setOpen, userData }) => {
         const result = await AddNewUser({ ...formData, password: formData.email }).unwrap();
         console.log("Respuesta del backend al agregar usuario:", result);
         toast.success("Usuario agregado exitosamente");
+        window.location.reload();
       }
 
       setTimeout(() => {

@@ -90,7 +90,7 @@ export function UserAction({ open, setOpen, onClick = () => {} }) {
               type='button'
               className={clsx(
                 " px-8 text-sm font-semibold text-white sm:w-auto hover:bg-green-500",
-                "bg-red-600 hover:bg-red-500"
+                "bg-red-600"
               )}
               onClick={onClick}
               label={"Sí"}
