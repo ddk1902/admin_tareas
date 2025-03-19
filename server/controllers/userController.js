@@ -187,27 +187,36 @@ export const markNotificationRead = async (req, res) => {
 
 export const changeUserPassword = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const { userId } = req.user; // ID del usuario autenticado
+    const { oldPassword, newPassword } = req.body;
 
+    // Buscar al usuario por su ID
     const user = await User.findById(userId);
 
-    if (user) {
-      user.password = req.body.password;
-
-      await user.save();
-
-      user.password = undefined;
-
-      res.status(201).json({
-        status: true,
-        message: `Contraseña cambiada exitosamente.`,
-      });
-    } else {
-      res.status(404).json({ status: false, message: "Usuario no encontrado" });
+    if (!user) {
+      return res.status(404).json({ status: false, message: "Usuario no encontrado" });
     }
+
+    // Verificar si la contraseña anterior es correcta
+    const isMatch = await user.matchPassword(oldPassword);
+    if (!isMatch) {
+      return res.status(400).json({ status: false, message: "La contraseña anterior es incorrecta" });
+    }
+
+    // Hashear la nueva contraseña
+    user.password = newPassword; // Asignar la nueva contraseña (se hashea automáticamente en el modelo)
+    await user.save();
+
+    // Limpiar la contraseña del objeto de respuesta
+    user.password = undefined;
+
+    res.status(200).json({
+      status: true,
+      message: "Contraseña cambiada exitosamente",
+    });
   } catch (error) {
-    console.log(error);
-    return res.status(400).json({ status: false, message: error.message });
+    console.error("Error al cambiar la contraseña:", error);
+    return res.status(500).json({ status: false, message: "Ocurrió un error al cambiar la contraseña" });
   }
 };
 
