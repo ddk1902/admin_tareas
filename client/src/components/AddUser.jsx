@@ -32,14 +32,14 @@ const AddUser = ({ open, setOpen, userData }) => {
         dispatch(setCredentials({...result.user}))
       }
     } else{
-        const result= await AddNewUser({...data,password:data.email}).unwrap();
+        await AddNewUser({...data,password:data.email}).unwrap();
         toast.success("Usuario agregado exitosamente");
       }
       setTimeout(() => {
         setOpen(false);
       },2000);
     } catch (error) {
-      toast.error("Ocurrió un error al agregar usuario");
+      toast.error("Ocurrió un error, por favor verifique");
     }
   };
 
