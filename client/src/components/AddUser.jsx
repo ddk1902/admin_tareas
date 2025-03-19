@@ -7,7 +7,7 @@ import Textbox from "./Textbox";
 import Loading from "./Loader";
 import Button from "./Button";
 import { useRegisterMutation } from "../redux/slices/api/authApiSlice";
-import { useUpdateUserMutation } from "../redux/slices/api/userApiSlice";
+import { useUpdateUserMutation, useDeleteUserMutation } from "../redux/slices/api/userApiSlice";
 import { toast } from "sonner";
 
 const AddUser = ({ open, setOpen, userData }) => {
@@ -33,6 +33,7 @@ const AddUser = ({ open, setOpen, userData }) => {
   const dispatch = useDispatch();
   const [AddNewUser, { isLoading }] = useRegisterMutation();
   const [updateUser, { isUpdating }] = useUpdateUserMutation();
+  const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
 
   const handleOnSubmit = async () => {
     const formData = getValues(); // Obtiene los valores actuales del formulario
@@ -73,6 +74,26 @@ const AddUser = ({ open, setOpen, userData }) => {
     } catch (error) {
       console.error("Error completo:", error);
       toast.error(error?.data?.message || "Ocurrió un error, por favor verifique");
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    if (!userData?._id) {
+      toast.error("No se puede eliminar un usuario sin ID.");
+      return;
+    }
+
+    try {
+      // Eliminar el usuario
+      const result = await deleteUser(userData._id).unwrap();
+      console.log("Respuesta del backend al eliminar usuario:", result);
+      toast.success(result?.message || "Usuario eliminado exitosamente");
+
+      // Recargar la página o actualizar los datos
+      window.location.reload();
+    } catch (error) {
+      console.error("Error al eliminar usuario:", error);
+      toast.error(error?.data?.message || "Ocurrió un error al eliminar el usuario.");
     }
   };
 
@@ -134,21 +155,33 @@ const AddUser = ({ open, setOpen, userData }) => {
             />
           </div>
 
-          {isLoading || isUpdating ? (
+          {isLoading || isUpdating || isDeleting ? (
             <div className='py-5'>
               <Loading />
             </div>
           ) : (
             <div className='py-3 mt-4 sm:flex sm:flex-row-reverse'>
+              {/* Botón Guardar */}
               <Button
                 type='submit'
-                className='bg-yellow-600 px-8 text-sm font-semibold text-white hover:bg-green-700  sm:w-auto sm:ml-4'
+                className='bg-yellow-600 px-8 text-sm font-semibold text-white hover:bg-green-700 sm:w-auto sm:ml-4'
                 label='Guardar'
               />
-               
+
+              {/* Botón Eliminar */}
+              {userData?._id && (
+                <Button
+                  type='button'
+                  className='bg-red-700 px-5 text-sm font-semibold text-white hover:bg-red-800 sm:w-auto sm:ml-4'
+                  onClick={handleDeleteUser}
+                  label='Eliminar'
+                />
+              )}
+
+              {/* Botón Cancelar */}
               <Button
                 type='button'
-                className='bg-red-700 px-5 text-sm font-semibold text-white hover:bg-red-700 sm:w-auto'
+                className='bg-blue-400 px-5 text-sm font-semibold text-white hover:bg-gray-500 sm:w-auto'
                 onClick={() => setOpen(false)}
                 label='Cancelar'
               />

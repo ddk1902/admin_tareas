@@ -47,15 +47,18 @@ const Users = () => {
     try {
       const result=await deleteUser(selected)
      
-      toast.success(res?.data?.message || "Usuario eliminado correctamente");  
+      
+      refetch();
+      toast.success( "Usuario eliminado correctamente");  
      setSelected(null);
+
      setTimeout(() => {
       setOpenAction(false);
      }, 500);
      window.location.reload();
     } catch (error) {
       console.log(err);
-      toast.error(err?.data?.message || "An error occurredAlgo salió mal..por favor verifique");
+      toast.error(err?.data?.message || "Algo salió mal..por favor verifique");
       
     }
   };
@@ -116,18 +119,18 @@ const Users = () => {
 
       <td className='p-2 flex gap-4 justify-end'>
         <Button
-          className='text-red-600 hover:text-green-500 font-semibold sm:px-0'
-          label='Editar'
+          className='bg-red-200 text-white600 hover:text-white-500 font-semibold sm:px-0 rounded-lg'
+          label='Editar/Eliminar'
           type='button'
           onClick={() => editClick(user)}
         />
 
-        <Button
+      {/*   <Button
           className='text-red-700 hover:text-yellow-500 font-semibold sm:px-0'
           label='Eliminar'
           type='button'
           onClick={() => deleteClick(user?._id)}
-        />
+        /> */}
       </td>
     </tr>
   );
