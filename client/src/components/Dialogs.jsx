@@ -47,7 +47,7 @@ export default function ConfirmatioDialog({
                 " px-8 text-sm font-semibold text-white sm:w-auto",
                 type === "restore" || type === "restoreAll"
                   ? "bg-yellow-600"
-                  : "bg-red-600 hover:bg-red-500"
+                  : "bg-red-600 hover:bg-green-500"
               )}
               onClick={onClick}
               label={type === "restore" ? "Restaurar" : "Eliminar"}
@@ -55,7 +55,7 @@ export default function ConfirmatioDialog({
 
             <Button
               type='button'
-              className='bg-white px-8 text-sm font-semibold text-gray-900 sm:w-auto border'
+              className='bg-white px-8 text-sm font-semibold text-gray-900 hover:bg-blue-300 sm:w-auto border'
               onClick={() => closeDialog()}
               label='Cancelar'
             />

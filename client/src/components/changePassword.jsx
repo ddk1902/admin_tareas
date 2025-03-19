@@ -118,14 +118,14 @@ const ChangePassword = ({ open, setOpen }) => {
               {/* Botón "Cambiar contraseña" */}
               <Button
                 type='submit'
-                className='bg-red-700 px-8 text-sm font-semibold text-white hover:bg-green-600'
+                className='bg-red-700 px-8 text-sm font-semibold text-white hover:bg-green-900'
                 label='Cambiar contraseña'
               />
 
               {/* Botón "Cancelar" */}
               <Button
                 type='button'
-                className='bg-gray-200 px-5 text-sm font-semibold text-gray-900 hover:bg-gray-300'
+                className='bg-gray-500 px-5 text-sm font-semibold text-white hover:bg-yellow-600'
                 onClick={() => setOpen(false)}
                 label='Cancelar'
               />

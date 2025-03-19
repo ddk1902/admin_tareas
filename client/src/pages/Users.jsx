@@ -78,12 +78,13 @@ const Users = () => {
   }
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
-      <tr className='text-black text-left'>
+      <tr className='text-black text-center'>
         <th className='py-2'>Nombre</th>
         <th className='py-2'>Título</th>
         <th className='py-2'>Email</th>
         <th className='py-2'>Rol</th>
-        <th className='py-2'>Activo?</th>
+        <th className='py-2'>Estado</th>
+        <th className='py-2'>Opciones</th>
       </tr>
     </thead>
   );

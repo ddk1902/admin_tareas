@@ -9,6 +9,7 @@ import Button from "./Button";
 import { useRegisterMutation } from "../redux/slices/api/authApiSlice";
 import { useUpdateUserMutation, useDeleteUserMutation } from "../redux/slices/api/userApiSlice";
 import { toast } from "sonner";
+import ConfirmatioDialog from "./Dialogs"; // Importa el diálogo de confirmación
 
 const AddUser = ({ open, setOpen, userData }) => {
   const { user } = useSelector((state) => state.auth);
@@ -25,7 +26,6 @@ const AddUser = ({ open, setOpen, userData }) => {
   // Actualiza los valores del formulario cuando userData cambia
   React.useEffect(() => {
     if (userData) {
-      console.log("Datos recibidos en userData:", userData); // Verifica los datos iniciales
       reset(userData);
     }
   }, [userData, reset]);
@@ -34,6 +34,9 @@ const AddUser = ({ open, setOpen, userData }) => {
   const [AddNewUser, { isLoading }] = useRegisterMutation();
   const [updateUser, { isUpdating }] = useUpdateUserMutation();
   const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
+
+  // Estado para controlar la visibilidad del diálogo de confirmación
+  const [isConfirmationOpen, setIsConfirmationOpen] = React.useState(false);
 
   const handleOnSubmit = async () => {
     const formData = getValues(); // Obtiene los valores actuales del formulario
@@ -99,6 +102,7 @@ const AddUser = ({ open, setOpen, userData }) => {
 
   return (
     <>
+      {/* Modal principal para agregar/editar usuarios */}
       <ModalWrapper open={open} setOpen={setOpen}>
         <form onSubmit={handleSubmit(handleOnSubmit)} className=''>
           <Dialog.Title
@@ -172,8 +176,8 @@ const AddUser = ({ open, setOpen, userData }) => {
               {userData?._id && (
                 <Button
                   type='button'
-                  className='bg-red-700 px-5 text-sm font-semibold text-white hover:bg-red-800 sm:w-auto sm:ml-4'
-                  onClick={handleDeleteUser}
+                  className='bg-purple-700 px-5 text-sm font-semibold text-white hover:bg-red-800 sm:w-auto sm:ml-4'
+                  onClick={() => setIsConfirmationOpen(true)} // Abre el diálogo de confirmación
                   label='Eliminar'
                 />
               )}
@@ -189,6 +193,15 @@ const AddUser = ({ open, setOpen, userData }) => {
           )}
         </form>
       </ModalWrapper>
+
+      {/* Diálogo de confirmación para eliminar usuario */}
+      <ConfirmatioDialog
+        open={isConfirmationOpen}
+        setOpen={setIsConfirmationOpen}
+        msg="¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer."
+        onClick={handleDeleteUser} // Acción a ejecutar si se confirma
+        type="delete"
+      />
     </>
   );
 };
