@@ -33,7 +33,7 @@ const Users = () => {
      setSelected(null);
      setTimeout(() => {
       setOpenAction(false);
-     }, 500);
+     }, 1500);
      window.location.reload();
     } catch (error) {
       console.log(error);
@@ -54,7 +54,7 @@ const Users = () => {
 
      setTimeout(() => {
       setOpenAction(false);
-     }, 500);
+     }, 1500);
      window.location.reload();
     } catch (error) {
       console.log(err);
@@ -119,8 +119,8 @@ const Users = () => {
 
       <td className='p-2 flex gap-4 justify-end'>
         <Button
-          className='bg-red-200 text-white600 hover:text-white-500 font-semibold sm:px-0 rounded-lg'
-          label='Editar/Eliminar'
+          className='bg-red-200 text-white-600 hover:text-red-500 font-semibold sm:px-4 rounded-lg'
+          label='Editar'
           type='button'
           onClick={() => editClick(user)}
         />
