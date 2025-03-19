@@ -57,7 +57,7 @@ export default function ConfirmatioDialog({
               type='button'
               className='bg-white px-8 text-sm font-semibold text-gray-900 sm:w-auto border'
               onClick={() => closeDialog()}
-              label='Cancel'
+              label='Cancelar'
             />
           </div>
         </div>

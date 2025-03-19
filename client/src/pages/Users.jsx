@@ -107,7 +107,7 @@ const Users = () => {
           onClick={() => userStatusClick(user)}
           className={clsx(
             "w-fit px-4 py-1 rounded-full",
-            user?.isActive ? "bg-red-200" : "bg-yellow-100"
+            user?.isActive ? "bg-green-200" : "bg-red-100"
           )}
         >
           {user?.isActive ? "Activo" : "Inactivo"}
@@ -116,7 +116,7 @@ const Users = () => {
 
       <td className='p-2 flex gap-4 justify-end'>
         <Button
-          className='text-blue-600 hover:text-yellow-500 font-semibold sm:px-0'
+          className='text-red-600 hover:text-green-500 font-semibold sm:px-0'
           label='Editar'
           type='button'
           onClick={() => editClick(user)}
