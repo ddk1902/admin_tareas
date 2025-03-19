@@ -82,23 +82,23 @@ export function UserAction({ open, setOpen, onClick = () => {} }) {
           </Dialog.Title>
 
           <p className='text-center text-gray-500'>
-            {"Estás esguro de desactivar esta cuenta de usuario?"}
+            {"Estás seguro de modificar el estado de  esta cuenta de usuario?"}
           </p>
 
           <div className='bg-gray-50 py-3 sm:flex sm:flex-row-reverse gap-4'>
             <Button
               type='button'
               className={clsx(
-                " px-8 text-sm font-semibold text-white sm:w-auto",
+                " px-8 text-sm font-semibold text-white sm:w-auto hover:bg-green-500",
                 "bg-red-600 hover:bg-red-500"
               )}
               onClick={onClick}
-              label={"Yes"}
+              label={"Sí"}
             />
 
             <Button
               type='button'
-              className='bg-white px-8 text-sm font-semibold text-gray-900 sm:w-auto border'
+              className='bg-white px-8 text-sm font-semibold text-white-900 sm:w-auto border hover:bg-yellow-500'
               onClick={() => closeDialog()}
               label='No'
             />

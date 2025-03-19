@@ -9,37 +9,69 @@ import Button from "./Button";
 import { useRegisterMutation } from "../redux/slices/api/authApiSlice";
 import { useUpdateUserMutation } from "../redux/slices/api/userApiSlice";
 import { toast } from "sonner";
+
 const AddUser = ({ open, setOpen, userData }) => {
-  let defaultValues = userData ?? {};
   const { user } = useSelector((state) => state.auth);
 
-
+  // Inicializa useForm con defaultValues
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm({ defaultValues });
+    getValues, // Para obtener los valores actuales del formulario
+  } = useForm({ defaultValues: userData ?? {} });
+
+  // Actualiza los valores del formulario cuando userData cambia
+  React.useEffect(() => {
+    if (userData) {
+      console.log("Datos recibidos en userData:", userData); // Verifica los datos iniciales
+      reset(userData);
+    }
+  }, [userData, reset]);
 
   const dispatch = useDispatch();
-  const [AddNewUser, {isLoading}]=useRegisterMutation();
-  const [updateUser, {isUpdating}]=useUpdateUserMutation();
-  const handleOnSubmit = async (data) => {
+  const [AddNewUser, { isLoading }] = useRegisterMutation();
+  const [updateUser, { isUpdating }] = useUpdateUserMutation();
+
+  const handleOnSubmit = async () => {
+    const formData = getValues(); // Obtiene los valores actuales del formulario
+    console.log("Datos enviados desde el formulario:", formData);
+
     try {
-      if(userData?._id===user>_id){
-        const result= await updateUser(data).unwrap();
-        toast.success(result?.message,"Usuario actualizado exitosamente");
-      if(userData._id===user._id){
-        dispatch(setCredentials({...result.user}))
-      }
-    } else{
-        await AddNewUser({...data,password:data.email}).unwrap();
+      if (userData?._id) {
+        // Verifica si el usuario ya existe
+        const hasChanges = Object.keys(formData).some(
+          (key) => formData[key] !== userData[key]
+        );
+
+        if (!hasChanges) {
+          // Si no hay cambios, muestra un mensaje y no envía la solicitud
+          toast.info("No se realizaron cambios.");
+          return;
+        }
+
+        // Actualizar usuario existente
+        const result = await updateUser({ id: userData._id, ...formData }).unwrap();
+        console.log("Respuesta del backend al actualizar usuario:", result);
+        toast.success(result?.message || "Usuario actualizado exitosamente");
+
+        if (userData._id === user._id) {
+          dispatch(setCredentials({ ...result.user }));
+        }
+      } else {
+        // Agregar nuevo usuario
+        const result = await AddNewUser({ ...formData, password: formData.email }).unwrap();
+        console.log("Respuesta del backend al agregar usuario:", result);
         toast.success("Usuario agregado exitosamente");
       }
+
       setTimeout(() => {
         setOpen(false);
-      },2000);
+      }, 2000);
     } catch (error) {
-      toast.error("Ocurrió un error, por favor verifique");
+      console.error("Error completo:", error);
+      toast.error(error?.data?.message || "Ocurrió un error, por favor verifique");
     }
   };
 
