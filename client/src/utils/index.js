@@ -1,6 +1,6 @@
 export const formatDate = (date) => {
   // Get the month, day, and year
-  const month = date.toLocaleString("en-US", { month: "short" });
+  const month = date.toLocaleString("es-ES", { month: "short" });
   const day = date.getDate();
   const year = date.getFullYear();
 
@@ -41,15 +41,15 @@ export function dateFormatter(dateString) {
     return names.map(word => word[0]?.toUpperCase()).join("");
 }
 export const PRIOTITYSTYELS = {
-  high: "text-red-600",
-  medium: "text-yellow-600",
-  low: "text-blue-600",
+  alta: "text-red-600",
+  media: "text-yellow-600",
+  baja: "text-blue-600",
 };
 
 export const TASK_TYPE = {
-  todo: "bg-blue-600",
-  "in progress": "bg-yellow-600",
-  completed: "bg-green-600",
+  pendiente: "bg-blue-600",
+  "en progreso": "bg-yellow-600",
+  completada: "bg-green-600",
 };
 
 export const BGS = [

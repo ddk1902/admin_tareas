@@ -35,7 +35,7 @@ const Trash = () => {
 
   const restoreAllClick = () => {
     setType("restoreAll");
-    setMsg("Do you want to restore all items in the trash?");
+    setMsg("Desea restaurar todos los items en la papelera?");
     setOpenDialog(true);
   };
 
@@ -48,17 +48,17 @@ const Trash = () => {
   const restoreClick = (id) => {
     setSelected(id);
     setType("restore");
-    setMsg("Do you want to restore the selected item?");
+    setMsg("Desea restaurar este ítem?");
     setOpenDialog(true);
   };
 
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black  text-left'>
-        <th className='py-2'>Task Title</th>
-        <th className='py-2'>Priority</th>
-        <th className='py-2'>Stage</th>
-        <th className='py-2 line-clamp-1'>Modified On</th>
+        <th className='py-2'>Título</th>
+        <th className='py-2'>Prioridad</th>
+        <th className='py-2'>Estado</th>
+        <th className='py-2 line-clamp-1'>Modificada en:</th>
       </tr>
     </thead>
   );

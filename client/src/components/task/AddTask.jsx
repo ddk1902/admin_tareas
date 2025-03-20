@@ -8,8 +8,8 @@ import SelectList from "../SelectList";
 import { BiImages } from "react-icons/bi";
 import Button from "../Button";
 
-const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
-const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
+const LISTS = ["PENDIENTE", "EN PROGRESO", "COMPLETADA"];
+const PRIORIRY = ["ALTA", "MEDIA", "NORMAL", "BAJA"];
 
 const uploadedFileURLs = [];
 
@@ -43,17 +43,17 @@ const AddTask = ({ open, setOpen }) => {
             as='h2'
             className='text-base font-bold leading-6 text-gray-900 mb-4'
           >
-            {task ? "UPDATE TASK" : "ADD TASK"}
+            {task ? "ACTUALIZAR TAREA" : "AGREGAR UNA TAREA"}
           </Dialog.Title>
 
           <div className='mt-2 flex flex-col gap-6'>
             <Textbox
-              placeholder='Task Title'
+              placeholder=''
               type='text'
               name='title'
-              label='Task Title'
+              label='Título'
               className='w-full rounded'
-              register={register("title", { required: "Title is required" })}
+              register={register("title", { required: "Campo obligatorio!" })}
               error={errors.title ? errors.title.message : ""}
             />
 
@@ -61,7 +61,7 @@ const AddTask = ({ open, setOpen }) => {
 
             <div className='flex gap-4'>
               <SelectList
-                label='Task Stage'
+                label='Estado de la tarea'
                 lists={LISTS}
                 selected={stage}
                 setSelected={setStage}

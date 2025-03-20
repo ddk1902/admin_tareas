@@ -19,9 +19,9 @@ const TABS = [
 ];
 
 const TASK_TYPE = {
-  todo: "bg-red-600",
-  "in progress": "bg-yellow-600",
-  completed: "bg-green-600",
+  pendiente: "bg-red-600",
+  "en progreso": "bg-yellow-600",
+  completada: "bg-green-600",
 };
 
 const Tasks = () => {
@@ -45,7 +45,7 @@ const Tasks = () => {
         {!status && (
           <Button
             onClick={() => setOpen(true)}
-            label='Create Task'
+            label='Crear tarea'
             icon={<IoMdAdd className='text-lg' />}
             className='flex flex-row-reverse gap-1 items-center bg-blue-600 text-white rounded-md py-2 2xl:py-2.5'
           />
@@ -55,12 +55,12 @@ const Tasks = () => {
       <Tabs tabs={TABS} setSelected={setSelected}>
         {!status && (
           <div className='w-full flex justify-between gap-4 md:gap-x-12 py-4'>
-            <TaskTitle label='Pendiente' className={TASK_TYPE.todo} />
+            <TaskTitle label='Pendiente' className={TASK_TYPE.pendiente} />
             <TaskTitle
               label='En progreso'
-              className={TASK_TYPE["in progress"]}
+              className={TASK_TYPE["en progreso"]}
             />
-            <TaskTitle label='Completadas' className={TASK_TYPE.completed} />
+            <TaskTitle label='Completadas' className={TASK_TYPE.completada} />
           </div>
         )}
 

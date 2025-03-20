@@ -5,8 +5,8 @@ export const summary = {
       _id: "65c5f12ab5204a81bde866a9",
       title: "Test task",
       date: "2024-02-09T00:00:00.000Z",
-      priority: "high",
-      stage: "todo",
+      priority: "alta",
+      stage: "pendiente",
       assets: [
         "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707471138863original-a005132062ca5bafc505c4c74f0e1865.jpg?alt=media&token=55f909f2-7f05-42f3-af4f-dc7f87cdea1d",
         "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707471144712PsZch9E1_400x400.jpg?alt=media&token=7ce62c7e-c240-4032-83c6-bb6c9cdc0d4b",
@@ -52,8 +52,8 @@ export const summary = {
       _id: "65c5d547660756f6fd453a7a",
       title: "Duplicate - Duplicate - Review Code Changes",
       date: "2024-02-09T00:00:00.000Z",
-      priority: "medium",
-      stage: "in progress",
+      priority: "media",
+      stage: "en progreso",
       assets: [],
       team: [
         {
@@ -74,14 +74,14 @@ export const summary = {
       isTrashed: false,
       activities: [
         {
-          type: "started",
+          type: "comenzada",
           activity: "Project started",
           date: "2024-02-09T09:16:56.623Z",
           by: "65c202d4aa62f32ffd1303cc",
           _id: "65c5f18bb5204a81bde866d1",
         },
         {
-          type: "commented",
+          type: "comentada",
           activity: "i like coding!!",
           date: "2024-02-09T09:16:56.623Z",
           by: "65c202d4aa62f32ffd1303cc",
@@ -111,8 +111,8 @@ export const summary = {
       _id: "65c46026af6ec0118be9407a",
       title: "Website Project Proposal Review",
       date: "2024-02-07T00:00:00.000Z",
-      priority: "high",
-      stage: "todo",
+      priority: "alta",
+      stage: "pendiente",
       assets: [
         "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707410130023hand-holding-writing-checklist-application-form-document-clipboard-white-background-3d-illustration.jpg?alt=media&token=08de4848-517f-48ca-a9b4-624744d5ddb0",
         "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707412301523image_processing20220706-26930-ktfgon.png?alt=media&token=6cd185c1-9fc3-4f52-bb0b-0d4a29e65b85",
@@ -144,14 +144,14 @@ export const summary = {
       isTrashed: false,
       activities: [
         {
-          type: "assigned",
+          type: "asignada",
           activity: "Test activity. Let's go!!!",
           date: "2024-02-08T17:55:34.353Z",
           by: "65c202d4aa62f32ffd1303cc",
           _id: "65c5188be1585cfa650b79c4",
         },
         {
-          type: "in progress",
+          type: "en progreso",
           activity: "Project is progress. Hiope to fin=ish soon!!",
           date: "2024-02-08T17:55:34.353Z",
           by: "65c202d4aa62f32ffd1303cc",
@@ -165,7 +165,7 @@ export const summary = {
           _id: "65c51a5e8064df97d208b392",
         },
         {
-          type: "commented",
+          type: "comentada",
           activity: "Nice work. Let's finished hard!!!",
           date: "2024-02-08T18:13:14.717Z",
           by: "65c202d4aa62f32ffd1303cc",
@@ -194,8 +194,8 @@ export const summary = {
       _id: "65c45fb6af6ec0118be94052",
       title: "Task Manager Youtube Video",
       date: "2024-02-11T00:00:00.000Z",
-      priority: "medium",
-      stage: "completed",
+      priority: "media",
+      stage: "completada",
       assets: [
         "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707412043078report.jpg?alt=media&token=41d02b42-c25c-4fbb-90a9-340a45f4bbe1",
         "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707412052287hand-holding-writing-checklist-application-form-document-clipboard-white-background-3d-illustration.jpg?alt=media&token=98b360b4-954c-47e3-8283-8228a54a327c",
@@ -219,7 +219,7 @@ export const summary = {
       isTrashed: false,
       activities: [
         {
-          type: "completed",
+          type: "completada",
           activity: "Project completed!!",
           date: "2024-02-08T18:13:14.717Z",
           by: "65c202d4aa62f32ffd1303cc",
@@ -242,8 +242,8 @@ export const summary = {
       _id: "65c4586f0548279012f8c256",
       title: "Bug Fixing",
       date: "2024-02-07T00:00:00.000Z",
-      priority: "high",
-      stage: "todo",
+      priority: "alta",
+      stage: "pendiente",
       assets: [
         "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707412457946Wed%20Dev%20Course.png?alt=media&token=028416bf-88c6-4738-9a5a-d90e6d53b202",
         "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707412466672original-380755132e03e80a9fa3ef1203219cf3.png?alt=media&token=10d96b0d-feea-4627-aa1e-9b8f87cf7500",
@@ -277,7 +277,7 @@ export const summary = {
       isTrashed: false,
       activities: [
         {
-          type: "commented",
+          type: "comentada",
           activity: "Great!!!",
           date: "2024-02-08T18:13:14.717Z",
           by: "65c202d4aa62f32ffd1303cc",
@@ -300,8 +300,8 @@ export const summary = {
       _id: "65c3c457fb9c6768ce4bc31a",
       title: "Duplicate - Website Project Proposal",
       date: "2024-02-07T17:55:13.218Z",
-      priority: "high",
-      stage: "todo",
+      priority: "alta",
+      stage: "pendiente",
       assets: [],
       team: [
         {
@@ -350,8 +350,8 @@ export const summary = {
       _id: "65c3c439fb9c6768ce4bc308",
       title: "Duplicate - Review Code Changes",
       date: "2024-02-07T17:55:13.218Z",
-      priority: "medium",
-      stage: "in progress",
+      priority: "media",
+      stage: "en progreso",
       assets: [],
       team: [
         {
@@ -388,7 +388,7 @@ export const summary = {
       title: "Duplicate - Website Project Proposal",
       date: "2024-02-07T17:46:56.040Z",
       priority: "normal",
-      stage: "todo",
+      stage: "pendiente",
       assets: [],
       team: [
         {
@@ -437,8 +437,8 @@ export const summary = {
       _id: "65c352b376ed5c48f9440955",
       title: "Review Code Changes",
       date: "2024-02-05T00:00:00.000Z",
-      priority: "medium",
-      stage: "in progress",
+      priority: "media",
+      stage: "en progreso",
       assets: [],
       team: [
         {
@@ -474,8 +474,8 @@ export const summary = {
       _id: "65c351b976ed5c48f9440947",
       title: "Website Project Proposal",
       date: "2024-02-07T00:00:00.000Z",
-      priority: "high",
-      stage: "todo",
+      priority: "alta",
+      stage: "pendiente",
       assets: [],
       team: [
         {
@@ -564,19 +564,19 @@ export const summary = {
     },
   ],
   tasks: {
-    todo: 6,
-    "in progress": 3,
-    completed: 1,
+    pendiente: 6,
+    "en progreso": 3,
+    completada: 1,
   },
 };
 
 export const chartData = [
   {
-    name: "High",
+    name: "Alta",
     total: 2400,
   },
   {
-    name: "Medium",
+    name: "Media",
     total: 2210,
   },
   {
@@ -584,7 +584,7 @@ export const chartData = [
     total: 3210,
   },
   {
-    name: "Low",
+    name: "Baja",
     total: 2290,
   },
 ];
@@ -594,8 +594,8 @@ export const tasks = [
     _id: "65c5f12ab5204a81bde866a9",
     title: "Test task",
     date: "2024-02-09T00:00:00.000Z",
-    priority: "high",
-    stage: "todo",
+    priority: "alta",
+    stage: "pendiente",
     assets: [
       "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707471138863original-a005132062ca5bafc505c4c74f0e1865.jpg?alt=media&token=55f909f2-7f05-42f3-af4f-dc7f87cdea1d",
       "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707471144712PsZch9E1_400x400.jpg?alt=media&token=7ce62c7e-c240-4032-83c6-bb6c9cdc0d4b",
@@ -638,8 +638,8 @@ export const tasks = [
     _id: "65c5d547660756f6fd453a7a",
     title: "Duplicate - Duplicate - Review Code Changes",
     date: "2024-02-09T00:00:00.000Z",
-    priority: "medium",
-    stage: "in progress",
+    priority: "media",
+    stage: "en progreso",
     assets: [],
     team: [
       {
@@ -658,14 +658,14 @@ export const tasks = [
     isTrashed: false,
     activities: [
       {
-        type: "started",
+        type: "comenzada",
         activity: "Project started",
         date: "2024-02-09T09:16:56.623Z",
         by: "65c202d4aa62f32ffd1303cc",
         _id: "65c5f18bb5204a81bde866d1",
       },
       {
-        type: "commented",
+        type: "comentada",
         activity: "i like coding!!",
         date: "2024-02-09T09:16:56.623Z",
         by: "65c202d4aa62f32ffd1303cc",
@@ -695,8 +695,8 @@ export const tasks = [
     _id: "65c46026af6ec0118be9407a",
     title: "Website Project Proposal Review",
     date: "2024-02-07T00:00:00.000Z",
-    priority: "high",
-    stage: "todo",
+    priority: "alta",
+    stage: "pendiente",
     assets: [
       "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707410130023hand-holding-writing-checklist-application-form-document-clipboard-white-background-3d-illustration.jpg?alt=media&token=08de4848-517f-48ca-a9b4-624744d5ddb0",
       "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707412301523image_processing20220706-26930-ktfgon.png?alt=media&token=6cd185c1-9fc3-4f52-bb0b-0d4a29e65b85",
@@ -725,14 +725,14 @@ export const tasks = [
     isTrashed: false,
     activities: [
       {
-        type: "assigned",
+        type: "asignada",
         activity: "Test activity. Let's go!!!",
         date: "2024-02-08T17:55:34.353Z",
         by: "65c202d4aa62f32ffd1303cc",
         _id: "65c5188be1585cfa650b79c4",
       },
       {
-        type: "in progress",
+        type: "en progreso",
         activity: "Project is progress. Hiope to fin=ish soon!!",
         date: "2024-02-08T17:55:34.353Z",
         by: "65c202d4aa62f32ffd1303cc",
@@ -746,7 +746,7 @@ export const tasks = [
         _id: "65c51a5e8064df97d208b392",
       },
       {
-        type: "commented",
+        type: "comentada",
         activity: "Nice work. Let's finished hard!!!",
         date: "2024-02-08T18:13:14.717Z",
         by: "65c202d4aa62f32ffd1303cc",
@@ -775,8 +775,8 @@ export const tasks = [
     _id: "65c45fb6af6ec0118be94052",
     title: "Task Manager Youtube Video",
     date: "2024-02-11T00:00:00.000Z",
-    priority: "medium",
-    stage: "completed",
+    priority: "media",
+    stage: "completada",
     assets: [
       "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707412043078report.jpg?alt=media&token=41d02b42-c25c-4fbb-90a9-340a45f4bbe1",
       "https://firebasestorage.googleapis.com/v0/b/taskmanager-557d7.appspot.com/o/1707412052287hand-holding-writing-checklist-application-form-document-clipboard-white-background-3d-illustration.jpg?alt=media&token=98b360b4-954c-47e3-8283-8228a54a327c",
@@ -798,21 +798,21 @@ export const tasks = [
     isTrashed: false,
     activities: [
       {
-        type: "started",
+        type: "comenzada",
         activity: "Project completed!!",
         date: "2024-02-08T18:13:14.717Z",
         by: { _id: "65c202d4aa62f32ffd1303cc", name: "Codewave" },
         _id: "65c51b998064dfd208b3f9",
       },
       {
-        type: "commented",
+        type: "comentada",
         activity: "Project completed!!",
         date: "2024-02-08T18:13:14.717Z",
         by: { _id: "65c202d4aa62f32ffd1303cc", name: "Codewave" },
         _id: "65c51b98064df97d208b3f9",
       },
       {
-        type: "completed",
+        type: "completada",
         activity: "Project completed!!",
         date: "2024-02-08T18:13:14.717Z",
         by: { _id: "65c202d4aa62f32ffd1303cc", name: "Codewave" },
@@ -1116,14 +1116,14 @@ export const user = {
 export const activitiesData = [
   {
     _id: "0",
-    type: "started",
+    type: "comenzada",
     activity: "started this task.",
     date: new Date("2023-01-15").toISOString(),
     by: "Akwasi Asante",
   },
   {
     _id: "1",
-    type: "commented",
+    type: "comentada",
     activity:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt nunc ipsum tempor purus vitae id. Morbi in vestibulum nec varius. Et diam cursus quis sed purus nam.",
     date: new Date("2023-01-15").toISOString(),
@@ -1131,7 +1131,7 @@ export const activitiesData = [
   },
   {
     _id: "2",
-    type: "assigned",
+    type: "asignada",
     activity: "task to Codewave Asante",
     date: new Date("2023-01-15").toISOString(),
     by: "Akwasi Asante",
@@ -1139,7 +1139,7 @@ export const activitiesData = [
 
   {
     _id: "3",
-    type: "in progress",
+    type: "en progreso",
     activity:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt nunc ipsum.",
     date: new Date("2024-01-15").toISOString(),
@@ -1154,7 +1154,7 @@ export const activitiesData = [
   },
   {
     _id: "4",
-    type: "completed",
+    type: "completada",
     activity: "Codewave Asante has completed the task assigned",
     date: new Date("2023-01-15").toISOString(),
     by: "Akwasi Asante",

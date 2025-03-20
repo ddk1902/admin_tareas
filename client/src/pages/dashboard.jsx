@@ -9,11 +9,13 @@ import { LuClipboardEdit } from "react-icons/lu";
 import { FaNewspaper, FaUsers } from "react-icons/fa";
 import { FaArrowsToDot } from "react-icons/fa6";
 import moment from "moment";
+import Loading from "../components/Loader";
 import { summary } from "../assets/data";
 import clsx from "clsx";
 import { Chart } from "../components/Chart";
 import { BGS, PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
 import UserInfo from "../components/UserInfo";
+import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice";
 
 const TaskTable = ({ tasks }) => {
   const ICONS = {
@@ -25,10 +27,10 @@ const TaskTable = ({ tasks }) => {
   const TableHeader = () => (
     <thead className='border-b border-gray-300 '>
       <tr className='text-black text-left'>
-        <th className='py-2'>Nombre de la tarea</th>
+        <th className='py-2'>Título de la tarea</th>
         <th className='py-2'>Prioridad</th>
         <th className='py-2'>Responsables</th>
-        <th className='py-2 hidden md:block'>Created At</th>
+        <th className='py-2 hidden md:block'>Creada en:</th>
       </tr>
     </thead>
   );
@@ -98,7 +100,7 @@ const UserTable = ({ users }) => {
       <tr className='text-black  text-left'>
         <th className='py-2'>Nombre</th>
         <th className='py-2'>Estado</th>
-        <th className='py-2'>registrado:</th>
+        <th className='py-2'>Registrado en:</th>
       </tr>
     </thead>
   );
@@ -108,7 +110,7 @@ const UserTable = ({ users }) => {
       <td className='py-2'>
         <div className='flex items-center gap-3'>
           <div className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-violet-700'>
-            <span className='text-center'>{getInitials(user?.data?.name)}</span>
+            <span className='text-center'>{getInitials(user?.name)}</span>
           </div>
 
           <div>
@@ -145,35 +147,58 @@ const UserTable = ({ users }) => {
     </div>
   );
 };
+
 const Dashboard = () => {
-  const totals = summary.tasks;
+  const { data, isLoading, error } = useGetDashboardStatsQuery();
+
+  // Registrar los datos recibidos desde el backend
+ // console.log("Datos recibidos desde el backend:", data);
+
+  if (isLoading) {
+    return (
+      <div className='py-10'>
+        <Loading />
+      </div>
+    );
+  }
+
+  if (error) {
+    console.error("Error al obtener los datos del dashboard:", error);
+    return (
+      <div className='py-10 text-red-500 text-center'>
+        Error al cargar los datos del dashboard.
+      </div>
+    );
+  }
+
+  const totals = data?.tasks || {};
 
   const stats = [
     {
       _id: "1",
       label: "Total de tareas",
-      total: summary?.totalTasks || 0,
+      total: data?.totalTasks || 0,
       icon: <FaNewspaper />,
       bg: "bg-[#1d4ed8]",
     },
     {
       _id: "2",
-      label: "Completadas",
-      total: totals["completed"] || 0,
+      label: "Tareas completadas",
+      total: totals["completada"] || 0,
       icon: <MdAdminPanelSettings />,
       bg: "bg-[#0f766e]",
     },
     {
       _id: "3",
-      label: "En progreso ",
-      total: totals["in progress"] || 0,
+      label: "Tareas en progreso",
+      total: totals["en progreso"] || 0,
       icon: <LuClipboardEdit />,
       bg: "bg-[#f59e0b]",
     },
     {
       _id: "4",
       label: "Pendientes",
-      total: totals["todo"],
+      total: totals["pendiente"] || 0,
       icon: <FaArrowsToDot />,
       bg: "bg-[#be185d]" || 0,
     },
@@ -199,6 +224,7 @@ const Dashboard = () => {
       </div>
     );
   };
+
   return (
     <div className='h-full py-4'>
       <div className='grid grid-cols-1 md:grid-cols-4 gap-5'>
@@ -207,20 +233,19 @@ const Dashboard = () => {
         ))}
       </div>
 
-      <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
+      {/* Gráfico de prioridades */}
+      {/* <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
         <h4 className='text-xl text-gray-600 font-semibold'>
-          Gráfico de tareas
+          Chart by Priority
         </h4>
-        <Chart />
-      </div>
+        <Chart data={data?.graphData} />
+      </div> */}
 
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
         {/* /left */}
-
         <TaskTable tasks={summary.last10Task} />
 
         {/* /right */}
-
         <UserTable users={summary.users} />
       </div>
     </div>
