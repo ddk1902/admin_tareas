@@ -33,12 +33,12 @@ const TaskDialog = ({ task }) => {
       onClick: () => setOpenEdit(true),
     },
     {
-      label: "Add Sub-Task",
+      label: "Agregar Subtarea",
       icon: <MdAdd className='mr-2 h-5 w-5' aria-hidden='true' />,
       onClick: () => setOpen(true),
     },
     {
-      label: "Duplicate",
+      label: "Duplicar",
       icon: <HiDuplicate className='mr-2 h-5 w-5' aria-hidden='true' />,
       onClick: () => duplicateHanlder(),
     },
@@ -93,7 +93,7 @@ const TaskDialog = ({ task }) => {
                         className='mr-2 h-5 w-5 text-red-400'
                         aria-hidden='true'
                       />
-                      Delete
+                      Eliminar
                     </button>
                   )}
                 </Menu.Item>

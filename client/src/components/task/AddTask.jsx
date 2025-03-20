@@ -69,13 +69,13 @@ const AddTask = ({ open, setOpen }) => {
 
               <div className='w-full'>
                 <Textbox
-                  placeholder='Date'
+                  placeholder=''
                   type='date'
                   name='date'
-                  label='Task Date'
+                  label='Fecha de la tarea'
                   className='w-full rounded'
                   register={register("date", {
-                    required: "Date is required!",
+                    required: "La fecha es obligatoria!",
                   })}
                   error={errors.date ? errors.date.message : ""}
                 />
@@ -84,7 +84,7 @@ const AddTask = ({ open, setOpen }) => {
 
             <div className='flex gap-4'>
               <SelectList
-                label='Priority Level'
+                label='Nivel de prioridad'
                 lists={PRIORIRY}
                 selected={priority}
                 setSelected={setPriority}

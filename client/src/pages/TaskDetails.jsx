@@ -295,7 +295,7 @@ const Activities = ({ activity, id }) => {
             rows={10}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder='Type ......'
+            placeholder='Escribe algo...'
             className='bg-white w-full mt-10 border border-gray-300 outline-none p-4 rounded-md focus:ring-2 ring-blue-500'
           ></textarea>
           {isLoading ? (

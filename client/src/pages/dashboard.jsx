@@ -106,28 +106,37 @@ const UserTable = ({ users }) => {
   );
 
   const TableRow = ({ user }) => (
-    <tr className='border-b border-gray-200  text-gray-600 hover:bg-gray-400/10'>
+    <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
       <td className='py-2'>
         <div className='flex items-center gap-3'>
           <div className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-violet-700'>
             <span className='text-center'>{getInitials(user?.name)}</span>
           </div>
-
+  
           <div>
             <p> {user.name}</p>
             <span className='text-xs text-black'>{user?.role}</span>
           </div>
         </div>
       </td>
-
+  
       <td>
+        {/* Asignar un valor predeterminado si isActive no está definido */}
         <p
           className={clsx(
             "w-fit px-3 py-1 rounded-full text-sm",
-            user?.isActive ? "bg-blue-200" : "bg-yellow-100"
+            typeof user?.isActive === "boolean"
+              ? user.isActive
+                ? "bg-green-200"
+                : "bg-yellow-100"
+              : "bg-green-200" // Valor predeterminado: activo
           )}
         >
-          {user?.isActive ? "Active" : "Disabled"}
+          {typeof user?.isActive === "boolean"
+            ? user.isActive
+              ? "Activo"
+              : "Inactivo"
+            : "Activo"} {/* Valor predeterminado: activo */}
         </p>
       </td>
       <td className='py-2 text-sm'>{moment(user?.createdAt).fromNow()}</td>
@@ -152,7 +161,7 @@ const Dashboard = () => {
   const { data, isLoading, error } = useGetDashboardStatsQuery();
 
   // Registrar los datos recibidos desde el backend
- // console.log("Datos recibidos desde el backend:", data);
+  //console.log("Datos recibidos desde el backend:", data);
 
   if (isLoading) {
     return (
@@ -233,13 +242,13 @@ const Dashboard = () => {
         ))}
       </div>
 
-      
-  {/*      <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
+      {/* Gráfico de prioridades */}
+      {/* <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
         <h4 className='text-xl text-red-600 font-semibold'>
-        Gráfico de prioridades de tareas
+          Gráfico de prioridades de tareas
         </h4>
         <Chart data={data?.graphData} />
-      </div>  */}
+      </div> */}
 
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
         {/* /left */}

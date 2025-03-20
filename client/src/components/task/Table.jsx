@@ -15,9 +15,9 @@ import Button from "../Button";
 import ConfirmatioDialog from "../Dialogs";
 
 const ICONS = {
-  high: <MdKeyboardDoubleArrowUp />,
-  medium: <MdKeyboardArrowUp />,
-  low: <MdKeyboardArrowDown />,
+  alta: <MdKeyboardDoubleArrowUp />,
+  media: <MdKeyboardArrowUp />,
+  baja: <MdKeyboardArrowDown />,
 };
 
 const Table = ({ tasks }) => {
@@ -34,11 +34,11 @@ const Table = ({ tasks }) => {
   const TableHeader = () => (
     <thead className='w-full border-b border-gray-300'>
       <tr className='w-full text-black  text-left'>
-        <th className='py-2'>Task Title</th>
-        <th className='py-2'>Priority</th>
-        <th className='py-2 line-clamp-1'>Created At</th>
-        <th className='py-2'>Assets</th>
-        <th className='py-2'>Team</th>
+        <th className='py-2'>Titulo de la tarea</th>
+        <th className='py-2'>Prioridad</th>
+        <th className='py-2 line-clamp-1'>Creada en fecha:</th>
+        <th className='py-2'>Recursos</th>
+        <th className='py-2'>Responsables</th>
       </tr>
     </thead>
   );
@@ -62,7 +62,7 @@ const Table = ({ tasks }) => {
             {ICONS[task?.priority]}
           </span>
           <span className='capitalize line-clamp-1'>
-            {task?.priority} Priority
+            {task?.priority} Prioridad
           </span>
         </div>
       </td>
@@ -77,45 +77,50 @@ const Table = ({ tasks }) => {
         <div className='flex items-center gap-3'>
           <div className='flex gap-1 items-center text-sm text-gray-600'>
             <BiMessageAltDetail />
-            <span>{task?.activities?.length}</span>
+            <span>{task?.activities?.length || 0}</span>
           </div>
           <div className='flex gap-1 items-center text-sm text-gray-600 dark:text-gray-400'>
             <MdAttachFile />
-            <span>{task?.assets?.length}</span>
+            <span>{task?.assets?.length || 0}</span>
           </div>
           <div className='flex gap-1 items-center text-sm text-gray-600 dark:text-gray-400'>
             <FaList />
-            <span>0/{task?.subTasks?.length}</span>
+            <span>0/{task?.subTasks?.length || 0}</span>
           </div>
         </div>
       </td>
 
       <td className='py-2'>
-        <div className='flex'>
-          {task?.team?.map((m, index) => (
-            <div
-              key={m._id}
-              className={clsx(
-                "w-7 h-7 rounded-full text-white flex items-center justify-center text-sm -mr-1",
-                BGS[index % BGS?.length]
-              )}
-            >
-              <UserInfo user={m} />
-            </div>
-          ))}
-        </div>
+        {/* Validación para task.team */}
+        {task?.team && Array.isArray(task.team) && task.team.length > 0 ? (
+          <div className='flex'>
+            {task.team.map((m, index) => (
+              <div
+                key={m._id}
+                className={clsx(
+                  "w-7 h-7 rounded-full text-white flex items-center justify-center text-sm -mr-1",
+                  BGS[index % BGS?.length]
+                )}
+              >
+                <UserInfo user={m} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <span className='text-sm text-gray-500'>Sin responsables</span>
+        )}
       </td>
 
       <td className='py-2 flex gap-2 md:gap-4 justify-end'>
         <Button
           className='text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base'
-          label='Edit'
+          label='Editar'
           type='button'
         />
 
         <Button
           className='text-red-700 hover:text-red-500 sm:px-0 text-sm md:text-base'
-          label='Delete'
+          label='Eliminar'
           type='button'
           onClick={() => deleteClicks(task._id)}
         />

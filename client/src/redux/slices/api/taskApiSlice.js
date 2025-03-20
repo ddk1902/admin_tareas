@@ -12,6 +12,13 @@ export const taskApiSlice = apiSlice.injectEndpoints({
         credentials: 'include', // Incluye cookies si es necesario
       }),
     }),
+    getAllTask: builder.query({
+        query: ({strQuery,isTrashed,search}) => ({
+          url: `${TASKS_URL}?stage=${strQuery}&isTrashed=${isTrashed}&search=${search}`,
+          method: 'GET',
+          credentials: 'include', // Incluye cookies si es necesario
+        }),
+      }),
   }),
 });
 
@@ -43,4 +50,4 @@ apiSlice.injectEndpoints({
 });
 
 // Exportar el hook generado
-export const { useGetDashboardStatsQuery } = taskApiSlice;
+export const { useGetDashboardStatsQuery,useGetAllTaskQuery} = taskApiSlice;

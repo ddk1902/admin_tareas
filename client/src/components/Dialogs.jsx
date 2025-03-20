@@ -50,7 +50,7 @@ export default function ConfirmatioDialog({
                   : "bg-red-600 hover:bg-green-500"
               )}
               onClick={onClick}
-              label={type === "restore" ? "Restaurar" : "Eliminar"}
+              label={type === "restaurar" ? "Restaurar" : "Eliminar"}
             />
 
             <Button

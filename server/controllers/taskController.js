@@ -197,33 +197,45 @@ export const dashboardStatistics = async (req, res) => {
 
 export const getTasks = async (req, res) => {
   try {
-    const { stage, isTrashed } = req.query;
+    const { stage, isTrashed, search } = req.query;
 
-    let query = { isTrashed: isTrashed ? true : false };
+    let query = {};
 
-    if (stage) {
-      query.stage = stage;
+    // Filtrar por estado si stage está presente
+    if (stage && typeof stage === "string") {
+      query.stage = decodeURIComponent(stage).toLowerCase();
     }
 
-    let queryResult = Task.find(query)
+    // Filtrar por isTrashed si es necesario
+    if (isTrashed !== undefined) {
+      query.isTrashed = isTrashed === "true";
+    }
+
+    // Aplicar búsqueda si search está presente
+    if (search && typeof search === "string") {
+      query.title = { $regex: search, $options: "i" };
+    }
+
+    // Ignorar el parámetro cacheBuster
+    console.log("Consulta construida:", query);
+
+    // Obtener las tareas
+    const tasks = await Task.find(query)
       .populate({
         path: "team",
         select: "name title email",
       })
       .sort({ _id: -1 });
 
-    const tasks = await queryResult;
-
     res.status(200).json({
       status: true,
       tasks,
     });
   } catch (error) {
-    console.log(error);
-    return res.status(400).json({ status: false, message: error.message });
+    console.error(error);
+    return res.status(500).json({ status: false, message: "Error interno del servidor." });
   }
 };
-
 export const getTask = async (req, res) => {
   try {
     const { id } = req.params;
