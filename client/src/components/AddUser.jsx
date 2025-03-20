@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import ModalWrapper from "./ModalWrapper";
@@ -8,11 +8,17 @@ import Loading from "./Loader";
 import Button from "./Button";
 import { useRegisterMutation } from "../redux/slices/api/authApiSlice";
 import { useUpdateUserMutation, useDeleteUserMutation } from "../redux/slices/api/userApiSlice";
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { toast } from "sonner";
-import ConfirmatioDialog from "./Dialogs"; // Importa el diálogo de confirmación
+import ConfirmatioDialog from "./Dialogs";
 
 const AddUser = ({ open, setOpen, userData }) => {
   const { user } = useSelector((state) => state.auth);
+
+  // Estados para manejar la subida de archivos
+  const [assets, setAssets] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadFileURLs, setUploadFileURLs] = useState([]); // Almacenar URLs de archivos subidos
 
   // Inicializa useForm con defaultValues
   const {
@@ -49,11 +55,14 @@ const AddUser = ({ open, setOpen, userData }) => {
           (key) => formData[key] !== userData[key]
         );
 
-        if (!hasChanges) {
-          // Si no hay cambios, muestra un mensaje y no envía la solicitud
+        if (!hasChanges && uploadFileURLs.length === 0) {
+          // Si no hay cambios ni archivos nuevos, muestra un mensaje y no envía la solicitud
           toast.info("No se realizaron cambios.");
           return;
         }
+
+        // Agregar URLs de archivos subidos al formData
+        formData.assets = uploadFileURLs;
 
         // Actualizar usuario existente
         const result = await updateUser({ id: userData._id, ...formData }).unwrap();
@@ -64,6 +73,9 @@ const AddUser = ({ open, setOpen, userData }) => {
           dispatch(setCredentials({ ...result.user }));
         }
       } else {
+        // Agregar URLs de archivos subidos al formData
+        formData.assets = uploadFileURLs;
+
         // Agregar nuevo usuario
         const result = await AddNewUser({ ...formData, password: formData.email }).unwrap();
         console.log("Respuesta del backend al agregar usuario:", result);
@@ -100,46 +112,98 @@ const AddUser = ({ open, setOpen, userData }) => {
     }
   };
 
+  const handleSelect = (e) => {
+    setAssets(e.target.files);
+  };
+
+  const uploadFiles = async () => {
+    if (assets.length === 0) {
+      toast.error("No hay archivos seleccionados para subir.");
+      return;
+    }
+
+    setUploading(true);
+    const uploadedURLs = [];
+
+    try {
+      for (const file of assets) {
+        const name = new Date().getTime() + "-" + file.name;
+        const storageRef = ref(storage, name);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        await new Promise((resolve, reject) => {
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+              console.log("Subiendo archivo...");
+            },
+            (error) => {
+              reject(error);
+            },
+            () => {
+              getDownloadURL(uploadTask.snapshot.ref)
+                .then((downloadURL) => {
+                  uploadedURLs.push(downloadURL);
+                  resolve();
+                })
+                .catch((error) => {
+                  reject(error);
+                });
+            }
+          );
+        });
+      }
+
+      setUploadFileURLs(uploadedURLs);
+      toast.success("Archivos subidos exitosamente.");
+    } catch (error) {
+      console.error("Error al subir archivos:", error);
+      toast.error("Ocurrió un error al subir los archivos.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <>
       {/* Modal principal para agregar/editar usuarios */}
       <ModalWrapper open={open} setOpen={setOpen}>
-        <form onSubmit={handleSubmit(handleOnSubmit)} className=''>
+        <form onSubmit={handleSubmit(handleOnSubmit)} className="">
           <Dialog.Title
-            as='h2'
-            className='text-base font-bold leading-6 text-gray-900 mb-4'
+            as="h2"
+            className="text-base font-bold leading-6 text-gray-900 mb-4"
           >
             {userData ? "Actualizar perfil" : "Agregar un nuevo usuario"}
           </Dialog.Title>
-          <div className='mt-2 flex flex-col gap-6'>
+          <div className="mt-2 flex flex-col gap-6">
             <Textbox
-              placeholder=''
-              type='text'
-              name='name'
-              label='Nombre completo'
-              className='w-full rounded'
+              placeholder=""
+              type="text"
+              name="name"
+              label="Nombre completo"
+              className="w-full rounded"
               register={register("name", {
                 required: "Campo obligatorio.!",
               })}
               error={errors.name ? errors.name.message : ""}
             />
             <Textbox
-              placeholder=''
-              type='text'
-              name='title'
-              label='Título'
-              className='w-full rounded'
+              placeholder=""
+              type="text"
+              name="title"
+              label="Título"
+              className="w-full rounded"
               register={register("title", {
                 required: "Campo obligatorio.!",
               })}
               error={errors.title ? errors.title.message : ""}
             />
             <Textbox
-              placeholder=''
-              type='email'
-              name='email'
-              label='Email'
-              className='w-full rounded'
+              placeholder=""
+              type="email"
+              name="email"
+              label="Email"
+              className="w-full rounded"
               register={register("email", {
                 required: "Campo obligatorio.!",
               })}
@@ -147,47 +211,80 @@ const AddUser = ({ open, setOpen, userData }) => {
             />
 
             <Textbox
-              placeholder=''
-              type='text'
-              name='role'
-              label='Rol'
-              className='w-full rounded'
+              placeholder=""
+              type="text"
+              name="role"
+              label="Rol"
+              className="w-full rounded"
               register={register("role", {
                 required: "Campo obligatorio.!",
               })}
               error={errors.role ? errors.role.message : ""}
             />
+
+            {/* Input para seleccionar archivos */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Adjuntar archivos
+              </label>
+              <input
+                type="file"
+                multiple
+                onChange={handleSelect}
+                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              {uploading && <p>Subiendo archivos...</p>}
+              {uploadFileURLs.length > 0 && (
+                <ul className="mt-2">
+                  {uploadFileURLs.map((url, index) => (
+                    <li key={index} className="text-sm text-gray-500">
+                      <a href={url} target="_blank" rel="noopener noreferrer">
+                        Archivo {index + 1}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
 
           {isLoading || isUpdating || isDeleting ? (
-            <div className='py-5'>
+            <div className="py-5">
               <Loading />
             </div>
           ) : (
-            <div className='py-3 mt-4 sm:flex sm:flex-row-reverse'>
+            <div className="py-3 mt-4 sm:flex sm:flex-row-reverse">
               {/* Botón Guardar */}
               <Button
-                type='submit'
-                className='bg-yellow-600 px-8 text-sm font-semibold text-white hover:bg-green-700 sm:w-auto sm:ml-4'
-                label='Guardar'
+                type="submit"
+                className="bg-yellow-600 px-8 text-sm font-semibold text-white hover:bg-green-700 sm:w-auto sm:ml-4"
+                label="Guardar"
+              />
+
+              {/* Botón Subir Archivos */}
+              <Button
+                type="button"
+                className="bg-purple-700 px-5 text-sm font-semibold text-white hover:bg-red-800 sm:w-auto sm:ml-4"
+                onClick={uploadFiles}
+                label="Subir Archivos"
               />
 
               {/* Botón Eliminar */}
               {userData?._id && (
                 <Button
-                  type='button'
-                  className='bg-purple-700 px-5 text-sm font-semibold text-white hover:bg-red-800 sm:w-auto sm:ml-4'
-                  onClick={() => setIsConfirmationOpen(true)} // Abre el diálogo de confirmación
-                  label='Eliminar'
+                  type="button"
+                  className="bg-purple-700 px-5 text-sm font-semibold text-white hover:bg-red-800 sm:w-auto sm:ml-4"
+                  onClick={() => setIsConfirmationOpen(true)}
+                  label="Eliminar"
                 />
               )}
 
               {/* Botón Cancelar */}
               <Button
-                type='button'
-                className='bg-blue-400 px-5 text-sm font-semibold text-white hover:bg-gray-500 sm:w-auto'
+                type="button"
+                className="bg-blue-400 px-5 text-sm font-semibold text-white hover:bg-gray-500 sm:w-auto"
                 onClick={() => setOpen(false)}
-                label='Cancelar'
+                label="Cancelar"
               />
             </div>
           )}
@@ -199,11 +296,12 @@ const AddUser = ({ open, setOpen, userData }) => {
         open={isConfirmationOpen}
         setOpen={setIsConfirmationOpen}
         msg="¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer."
-        onClick={handleDeleteUser} // Acción a ejecutar si se confirma
+        onClick={handleDeleteUser}
         type="delete"
       />
     </>
   );
 };
+
 
 export default AddUser;

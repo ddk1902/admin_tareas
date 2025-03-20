@@ -7,14 +7,16 @@ import UserList from "./UserList";
 import SelectList from "../SelectList";
 import { BiImages } from "react-icons/bi";
 import Button from "../Button";
+import {useCreateTaskMutation,useUpdateTaskMutation} from '../../redux/slices/api/taskApiSlice'
+import { useGetTeamListQuery } from "../../redux/slices/api/userApiSlice";
 
 const LISTS = ["PENDIENTE", "EN PROGRESO", "COMPLETADA"];
 const PRIORIRY = ["ALTA", "MEDIA", "NORMAL", "BAJA"];
 
 const uploadedFileURLs = [];
 
-const AddTask = ({ open, setOpen }) => {
-  const task = "";
+const AddTask = ({ open, setOpen,task}) => {
+
 
   const {
     register,
@@ -28,8 +30,48 @@ const AddTask = ({ open, setOpen }) => {
   );
   const [assets, setAssets] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const { data: users, isLoading: isUsersLoading, error: usersError } = useGetTeamListQuery();
 
-  const submitHandler = () => {};
+  // Agregar console.log para depurar los datos recibidos
+  console.log("Datos de usuarios obtenidos del backend:", users);
+  const[createTask,{isLoading}]=useCreateTaskMutation();
+  const[updateTask,{isLoading: isUpdating}]=useUpdateTaskMutation();
+
+  const URLS= task?.assets ? [...task.assets]:[];
+
+  const submitHandler = async (data) => {
+    for (const file of assets){
+      setUploading(true);
+      try {
+        await uploadedFileURLs(file);
+      } catch (error) {
+        console.error("Error al subir el recurso",error.message);
+        return;
+      } finally{
+        setUploading(false);
+      }
+    }
+    try {
+      const newData={
+        ...data,
+        assets:[...URLS, ...uploadedFileURLs],
+        team,
+        stage,
+        priority,
+      };
+      const res = task?._id
+      ? await updateTask({...newData,_id:task._id}).unwrap()
+      : await createTask(newData).unwrap();
+      toast.success(res.message);
+      setTimeout(()=>{
+        setOpen(false);
+      },500);
+
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.data?.message||err.error)
+    }
+  };
 
   const handleSelect = (e) => {
     setAssets(e.target.files);
@@ -57,7 +99,19 @@ const AddTask = ({ open, setOpen }) => {
               error={errors.title ? errors.title.message : ""}
             />
 
-            <UserList setTeam={setTeam} team={team} />
+            {/* <UserList setTeam={setTeam} team={team} /> */}
+            {/* Lista de usuarios */}
+            {isUsersLoading ? (
+              <p>Cargando usuarios...</p>
+            ) : usersError ? (
+              <p>Error al cargar usuarios.</p>
+            ) : (
+              <UserList
+                users={users || []} // Usuarios obtenidos desde el backend
+                selectedUsers={team}
+                setSelectedUsers={setTeam}
+              />
+            )}
 
             <div className='flex gap-4'>
               <SelectList
@@ -104,7 +158,7 @@ const AddTask = ({ open, setOpen }) => {
                     multiple={true}
                   />
                   <BiImages />
-                  <span>Add Assets</span>
+                  <span>Agregar recursos</span>
                 </label>
               </div>
             </div>
@@ -112,21 +166,21 @@ const AddTask = ({ open, setOpen }) => {
             <div className='bg-gray-50 py-6 sm:flex sm:flex-row-reverse gap-4'>
               {uploading ? (
                 <span className='text-sm py-2 text-red-500'>
-                  Uploading assets
+                  Subiendo recursos
                 </span>
               ) : (
                 <Button
-                  label='Submit'
+                  label='Guardar'
                   type='submit'
-                  className='bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto'
+                  className='bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-green-700  sm:w-auto'
                 />
               )}
 
               <Button
                 type='button'
-                className='bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto'
+                className='bg-yellow-500 px-5 text-sm font-semibold text-gray-900 sm:w-auto hover:bg-gray-500'
                 onClick={() => setOpen(false)}
-                label='Cancel'
+                label='Cancelar'
               />
             </div>
           </div>

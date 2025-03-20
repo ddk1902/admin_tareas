@@ -19,6 +19,45 @@ export const taskApiSlice = apiSlice.injectEndpoints({
           credentials: 'include', // Incluye cookies si es necesario
         }),
       }),
+
+      createTask: builder.mutation({
+        query: (data) => ({
+          url: `${TASKS_URL}/create`,
+          method: 'POST',
+          body: data,
+          credentials: 'include',
+        }),
+      }),
+      deleteTask: builder.mutation({
+        query: (id) => ({
+          url: `${TASKS_URL}/${id}`,
+          method: 'DELETE',
+          credentials: 'include',
+        }),
+      }),
+      restoreTask: builder.mutation({
+        query: (id) => ({
+          url: `${TASKS_URL}/restore/${id}`,
+          method: 'PUT',
+          credentials: 'include',
+        }),
+      }),
+      duplicateTask: builder.mutation({
+        query: (id) => ({
+          url: `${TASKS_URL}/duplicate/${id}`,
+          method: 'POST',
+          body: {},
+          credentials: 'include',
+        }),
+      }),
+      updateTask: builder.mutation({
+        query: ({id, data}) => ({
+          url: `${TASKS_URL}/update/${data._id}`,
+          method: 'PUT',
+          body: data,
+          credentials: 'include',
+        }),
+      }),
   }),
 });
 
@@ -50,4 +89,11 @@ apiSlice.injectEndpoints({
 });
 
 // Exportar el hook generado
-export const { useGetDashboardStatsQuery,useGetAllTaskQuery} = taskApiSlice;
+export const { useGetDashboardStatsQuery,
+  useGetAllTaskQuery,
+  useCreateTaskMutation,
+  useDuplicateTaskMutation,
+  useDeleteTaskMutation,
+  useRestoreTaskMutation,
+  useUpdateTaskMutation
+} = taskApiSlice;
