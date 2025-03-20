@@ -233,20 +233,20 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Gráfico de prioridades */}
-      {/* <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
-        <h4 className='text-xl text-gray-600 font-semibold'>
-          Chart by Priority
+      
+  {/*      <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
+        <h4 className='text-xl text-red-600 font-semibold'>
+        Gráfico de prioridades de tareas
         </h4>
         <Chart data={data?.graphData} />
-      </div> */}
+      </div>  */}
 
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
         {/* /left */}
-        <TaskTable tasks={summary.last10Task} />
+        <TaskTable tasks={data?.last10Task} />
 
         {/* /right */}
-        <UserTable users={summary.users} />
+        <UserTable users={data?.users} />
       </div>
     </div>
   );
