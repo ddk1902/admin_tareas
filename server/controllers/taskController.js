@@ -15,7 +15,7 @@ export const createTask = async (req, res) => {
 
     text =
       text +
-      ` La tarea es de  ${priority} prioridad, por favor verifique. La fecha de la tareas es: ${new Date(
+      ` La tarea es de  ${priority} prioridad, por favor verifique. La fecha en que se creó la tarea es: ${new Date(
         date
       ).toDateString()}. Gracias!!!`;
 
@@ -44,6 +44,7 @@ export const createTask = async (req, res) => {
     res
       .status(200)
       .json({ status: true, task, message: "Tarea creada con éxito.!." });
+      window.location.reload();
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
