@@ -15,6 +15,7 @@ import UserInfo from "../components/UserInfo";
 import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice";
 import moment from "moment";
 import "moment/locale/es"; // Importa la localización en español
+import { PiEquals} from "react-icons/pi";
 
 // Configura moment para usar español globalmente
 moment.locale("es");
@@ -44,6 +45,7 @@ const TaskTable = ({ tasks }) => {
     alta: <MdKeyboardDoubleArrowUp />,
     media: <MdKeyboardArrowUp />,
     baja: <MdKeyboardArrowDown />,
+    normal: <PiEquals/>
   };
 
   const TableHeader = () => (

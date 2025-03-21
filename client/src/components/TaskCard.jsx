@@ -15,12 +15,12 @@ import { FaEquals, FaList } from "react-icons/fa";
 import UserInfo from "./UserInfo";
 import { IoMdAdd } from "react-icons/io";
 import AddSubTask from "./task/AddSubTask";
-
+import { PiEquals} from "react-icons/pi";
 const ICONS = {
   alta: <MdKeyboardDoubleArrowUp />,
   media: <MdKeyboardArrowUp />,
   baja: <MdKeyboardDoubleArrowDown />,
-  normal:<FaEquals />,
+  normal:<PiEquals />,
 };
 
 const TaskCard = ({ task }) => {
