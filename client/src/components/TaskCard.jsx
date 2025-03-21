@@ -2,26 +2,26 @@ import clsx from "clsx";
 import React, { useState } from "react";
 import {
   MdAttachFile,
-  MdKeyboardArrowDown,
+  MdKeyboardDoubleArrowDown,
   MdKeyboardArrowUp,
   MdKeyboardDoubleArrowUp,
-  MdKeyboardDoubleArrowDown,
 } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../utils";
 import TaskDialog from "./task/TaskDialog";
 import { BiMessageAltDetail } from "react-icons/bi";
-import { FaEquals, FaList } from "react-icons/fa";
+import { FaList } from "react-icons/fa";
 import UserInfo from "./UserInfo";
 import { IoMdAdd } from "react-icons/io";
 import AddSubTask from "./task/AddSubTask";
 import { PiEquals} from "react-icons/pi";
 const ICONS = {
-  alta: <MdKeyboardDoubleArrowUp />,
-  media: <MdKeyboardArrowUp />,
-  baja: <MdKeyboardDoubleArrowDown />,
-  normal:<PiEquals />,
+alta: <MdKeyboardDoubleArrowUp />,
+media: <MdKeyboardArrowUp />,
+baja: <MdKeyboardDoubleArrowDown />,
+normal:<PiEquals />,
 };
+
 
 const TaskCard = ({ task }) => {
   const { user } = useSelector((state) => state.auth);
@@ -38,10 +38,10 @@ const TaskCard = ({ task }) => {
             )}
           >
             <span className='text-lg'>{ICONS[task?.priority]}</span>
-            <span className='uppercase'>Prioridad {task?.priority} </span>
+            <span className='uppercase'>Prioridad {task?.priority}</span>
           </div>
 
-          {user?.data?.isAdmin && <TaskDialog task={task} />}
+          {user?.isAdmin && <TaskDialog task={task} />}
         </div>
 
         <>
@@ -107,7 +107,7 @@ const TaskCard = ({ task }) => {
         ) : (
           <>
             <div className='py-4 border-t border-gray-200'>
-              <span className='text-gray-500'>No existen Sub tareas</span>
+              <span className='text-gray-500'>No hay sub-tareas</span>
             </div>
           </>
         )}
@@ -115,11 +115,11 @@ const TaskCard = ({ task }) => {
         <div className='w-full pb-2'>
           <button
             onClick={() => setOpen(true)}
-            disabled={user.data?.isAdmin ? false : true}
+            disabled={user.isAdmin ? false : true}
             className='w-full flex gap-4 items-center text-sm text-gray-500 font-semibold disabled:cursor-not-allowed disabled::text-gray-300'
           >
             <IoMdAdd className='text-lg' />
-            <span>Agregar Sub Tarea</span>
+            <span>Agregar sub-tarea</span>
           </button>
         </div>
       </div>

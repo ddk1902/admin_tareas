@@ -9,6 +9,9 @@ import { Menu, Transition } from "@headlessui/react";
 import AddTask from "./AddTask";
 import AddSubTask from "./AddSubTask";
 import ConfirmatioDialog from "../Dialogs";
+import { deleteRestoreTask } from "../../../../server/controllers/taskController";
+import {toast} from 'sonner'
+import { useDuplicateTaskMutation, useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
 
 const TaskDialog = ({ task }) => {
   const [open, setOpen] = useState(false);
@@ -16,19 +19,54 @@ const TaskDialog = ({ task }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const navigate = useNavigate();
+  const [deleteTask]=useTrashTaskMutation();
+  const[duplicateTask]=useDuplicateTaskMutation();
+  
+  const duplicateHandler = async() => {
+    try {
+      const res= await duplicateTask(task._id).unwrap();
+      toast.success(res?.message);
+      
+      setTimeout(()=>{
+        setOpenDialog(false);
+        window.location.reload();
+      },500);
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message||err.error)
+    }
+  };
 
-  const duplicateHandler = () => {};
-  const deleteClicks = () => {};
-  const deleteHandler = () => {};
+  const deleteClicks = () => {
+    setOpenDialog(true)
+  };
+  const deleteHandler = async() => {
+    try {
+      const res= await deleteTask({
+      id:task._id,
+      isTrashed:"trash",
+      }).unwrap();
+
+      toast.success(res?.message);
+
+      setTimeout(()=>{
+        setOpenDialog(false);
+        window.location.reload();
+      },500);
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message||err.error)
+    }
+  };
 
   const items = [
     {
-      label: "Open Task",
+      label: "Ver la tarea",
       icon: <AiTwotoneFolderOpen className='mr-2 h-5 w-5' aria-hidden='true' />,
-      onClick: () => navigate(`/task/${task._id}`),
+      onClick: () => navigate(`/task/${task?._id}`),
     },
     {
-      label: "Edit",
+      label: "Editar",
       icon: <MdOutlineEdit className='mr-2 h-5 w-5' aria-hidden='true' />,
       onClick: () => setOpenEdit(true),
     },
@@ -40,7 +78,7 @@ const TaskDialog = ({ task }) => {
     {
       label: "Duplicar",
       icon: <HiDuplicate className='mr-2 h-5 w-5' aria-hidden='true' />,
-      onClick: () => duplicateHanlder(),
+      onClick: () => duplicateHandler(),
     },
   ];
 

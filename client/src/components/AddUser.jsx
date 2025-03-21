@@ -11,6 +11,7 @@ import { useUpdateUserMutation, useDeleteUserMutation } from "../redux/slices/ap
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { toast } from "sonner";
 import ConfirmatioDialog from "./Dialogs";
+import { storage } from "../utils/firebase"; // Importa el servicio de Firebase Storage
 
 const AddUser = ({ open, setOpen, userData }) => {
   const { user } = useSelector((state) => state.auth);
@@ -223,29 +224,7 @@ const AddUser = ({ open, setOpen, userData }) => {
             />
 
             {/* Input para seleccionar archivos */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Adjuntar archivos
-              </label>
-              <input
-                type="file"
-                multiple
-                onChange={handleSelect}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
-              {uploading && <p>Subiendo archivos...</p>}
-              {uploadFileURLs.length > 0 && (
-                <ul className="mt-2">
-                  {uploadFileURLs.map((url, index) => (
-                    <li key={index} className="text-sm text-gray-500">
-                      <a href={url} target="_blank" rel="noopener noreferrer">
-                        Archivo {index + 1}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+            
           </div>
 
           {isLoading || isUpdating || isDeleting ? (
@@ -261,13 +240,6 @@ const AddUser = ({ open, setOpen, userData }) => {
                 label="Guardar"
               />
 
-              {/* Botón Subir Archivos */}
-              <Button
-                type="button"
-                className="bg-purple-700 px-5 text-sm font-semibold text-white hover:bg-red-800 sm:w-auto sm:ml-4"
-                onClick={uploadFiles}
-                label="Subir Archivos"
-              />
 
               {/* Botón Eliminar */}
               {userData?._id && (

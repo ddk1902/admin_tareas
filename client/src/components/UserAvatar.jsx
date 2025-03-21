@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getInitials } from "../utils";
 import { useLogoutMutation } from "../redux/slices/api/authApiSlice";
-import {Toaster as toast} from "sonner";
+import {toast} from "sonner";
 import { logout } from "../redux/slices/authSlice";
 import AddUser from "./AddUser";
 import ChangePassword from "./changePassword";

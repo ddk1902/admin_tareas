@@ -50,14 +50,24 @@ export const createTask = async (req, res) => {
   }
 };
 
-export const duplicateTask = async (req, res) => {
-  try {
-    const { id } = req.params;
+/* export const duplicateTask = async (req, res) => {
+  console.log("Params:", req.params); // Depuración
 
+  const { id } = req.params;
+
+  if (!id || id.trim() === "") {
+    return res.status(400).json({ status: false, message: "ID inválido" });
+  }
+
+  try {
     const task = await Task.findById(id);
 
+    if (!task) {
+      return res.status(404).json({ status: false, message: "Tarea no encontrada" });
+    }
+
     const newTask = await Task.create({
-      ...task,
+      ...task.toObject(),
       title: task.title + " - Duplicado",
     });
 
@@ -69,7 +79,6 @@ export const duplicateTask = async (req, res) => {
 
     await newTask.save();
 
-    //alert users of the task
     let text = "Una nueva tarea le ha sido asignada a usted";
     if (task.team.length > 1) {
       text = text + ` y ${task.team.length - 1} otros.`;
@@ -77,7 +86,7 @@ export const duplicateTask = async (req, res) => {
 
     text =
       text +
-      ` La tarea es de  ${priority} prioridad, por favor verifique. La fecha de la tareas es: ${task.date.toDateString()}. Gracias!!!`;
+      ` La tarea es de  ${task.priority} prioridad, por favor verifique. La fecha de la tareas es: ${task.date.toDateString()}. Gracias!!!`;
 
     await Notice.create({
       team: task.team,
@@ -91,6 +100,35 @@ export const duplicateTask = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
+  }
+}; */
+export const duplicateTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Buscar la tarea original
+    const task = await Task.findById(id);
+
+    if (!task) {
+      return res.status(404).json({ status: false, message: "Tarea no encontrada" });
+    }
+
+    // Eliminar el campo _id del objeto original
+    const { _id, ...taskData } = task.toObject();
+
+    // Crear una nueva tarea duplicada con un título modificado
+    const newTask = await Task.create({
+      ...taskData,
+      title: task.title + " - Duplicado",
+    });
+
+    res.status(200).json({
+      status: true,
+      message: "Tarea duplicada exitosamente.",
+    });
+  } catch (error) {
+    console.error("Error en duplicateTask:", error);
+    res.status(500).json({ status: false, message: "Error interno del servidor" });
   }
 };
 
