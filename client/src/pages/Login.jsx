@@ -1,119 +1,134 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Textbox from "../components/Textbox";
 import Button from "../components/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { useLoginMutation } from "../redux/slices/api/authApiSlice";
+import { auth, signInWithEmailAndPassword } from "../utils/firebase"; // Importa Firebase Auth
 import { toast } from "sonner";
 import Loading from "../components/Loader";
-import { setCredentials } from "../redux/slices/authSlice";
 
 const Login = () => {
-  const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false); // Estado para manejar la carga
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [login, { isLoading }] = useLoginMutation();
+  // Verificar si el usuario ya está autenticado
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigate("/dashboard"); // Redirigir al dashboard si el usuario está autenticado
+      }
+    });
 
+    return () => unsubscribe(); // Limpia el listener cuando el componente se desmonta
+  }, [navigate]);
 
-
+  // Manejar el envío del formulario
   const submitHandler = async (data) => {
+    setIsLoading(true); // Activar estado de carga
     try {
-      const result = await login(data).unwrap();
-      //if (result) {
-        console.log(result);
-        dispatch(setCredentials(result));
-        navigate("/");
+      const { email, password } = data;
+
+      // Intentar iniciar sesión con Firebase
+      await signInWithEmailAndPassword(auth, email, password);
+
+      // Si el inicio de sesión es exitoso, redirigir al dashboard
+      toast.success("Inicio de sesión exitoso.");
+      navigate("/dashboard");
     } catch (error) {
-      console.log(error)
-      toast.error(error?.data?.message || "Algo salío mal..!");
+      console.error("Error al iniciar sesión:", error.message);
+      const errorMessage =
+        error.code === "auth/wrong-password"
+          ? "Contraseña incorrecta."
+          : error.code === "auth/user-not-found"
+          ? "Usuario no encontrado."
+          : "Algo salió mal. Inténtalo de nuevo.";
+      toast.error(errorMessage); // Mostrar mensaje de error específico
+    } finally {
+      setIsLoading(false); // Desactivar estado de carga
     }
   };
 
-  useEffect(() => {
-    user && navigate("/dashboard");
-  }, [user]);
-
   return (
-    <div className='w-full min-h-screen flex items-center justify-center flex-col lg:flex-row bg-[#f3f4f6]'>
-      <div className='w-full md:w-auto flex gap-0 md:gap-40 flex-col md:flex-row items-center justify-center'>
-        {/* left side */}
-        <div className='h-full w-full lg:w-2/3 flex flex-col items-center justify-center'>
-          <div className='w-full md:max-w-lg 2xl:max-w-3xl flex flex-col items-center justify-center gap-5 md:gap-y-10 2xl:-mt-20'>
-            <span className='flex gap-1 py-1 px-3 border rounded-full text-sm md:text-base bordergray-300 text-gray-600'>
-            
-            </span>
-            <p className='flex flex-col gap-0 md:gap-4 text-4xl md:text-6xl 2xl:text-7xl font-black text-center text-red-700'>
-            
-              <span>Administrador de Tareas de la Unidad de Proyectos, Convenios e Investigación</span>
-            </p>
+    <div className="w-full min-h-screen flex items-center justify-center flex-col lg:flex-row bg-[#f3f4f6]">
+      {/* Lado izquierdo: Logo y descripción */}
+      <div className="w-full lg:w-2/3 flex flex-col items-center justify-center">
+        <div className="w-full md:max-w-lg 2xl:max-w-3xl flex flex-col items-center justify-center gap-5 md:gap-y-10">
+          <p className="text-4xl md:text-6xl 2xl:text-7xl font-black text-center text-red-700">
+            Administrador de Tareas
+          </p>
+          <p className="text-xl text-center text-gray-600">
+            Gestiona tus tareas y proyectos de manera eficiente.
+          </p>
+        </div>
+      </div>
 
-            <div className='cell'>
-              <div className='circle rotate-in-up-lef'></div>
-            </div>
+      {/* Lado derecho: Formulario de inicio de sesión */}
+      <div className="w-full md:w-1/3 p-4 flex flex-col justify-center items-center">
+        <form
+          onSubmit={handleSubmit(submitHandler)}
+          className="form-container w-full md:w-[400px] flex flex-col gap-y-8 bg-white px-10 py-14 rounded-lg shadow-md"
+        >
+          <div className="text-center">
+            <p className="text-red-600 text-3xl font-bold">¡Bienvenido de nuevo!</p>
+            <p className="text-base text-gray-700">Ingresa tus credenciales para continuar.</p>
           </div>
-        </div>
 
-        {/* derecha */}
-        <div className='w-full md:w-1/3 p-4 md:p-1 flex flex-col justify-center items-center'>
-          <form
-            onSubmit={handleSubmit(submitHandler)}
-            className='form-container w-full md:w-[400px] flex flex-col gap-y-8 bg-white px-10 pt-14 pb-14'
-          >
-            <div className=''>
-              <p className='text-red-600 text-3xl font-bold text-center'>
-                Bienvenido de nuevo!
-              </p>
-              <p className='text-center text-base text-gray-700 '>
-               
-              </p>
-            </div>
+          {/* Campo de correo electrónico */}
+          <Textbox
+            placeholder="ejemplo@correo.com"
+            type="email"
+            name="email"
+            label="Correo Electrónico"
+            className="w-full rounded-full"
+            register={register("email", {
+              required: "El correo electrónico es obligatorio.",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Ingresa un correo electrónico válido.",
+              },
+            })}
+            error={errors.email ? errors.email.message : ""}
+          />
 
-            <div className='flex flex-col gap-y-5'>
-              <Textbox
-                placeholder=''
-                type='email'
-                name='email'
-                label='Email'
-                className='w-full rounded-full'
-                register={register("email", {
-                  required: "*Campo obligatorio!",
-                })}
-                error={errors.email ? errors.email.message : ""}
-              />
-              <Textbox
-                placeholder=''
-                type='password'
-                name='password'
-                label='Contraseña'
-                className='w-full rounded-full'
-                register={register("password", {
-                  required: "*Campo obligatorio!",
-                })}
-                error={errors.password ? errors.password.message : ""}
-              />
+          {/* Campo de contraseña */}
+          <Textbox
+            placeholder="Contraseña"
+            type="password"
+            name="password"
+            label="Contraseña"
+            className="w-full rounded-full"
+            register={register("password", {
+              required: "La contraseña es obligatoria.",
+              minLength: {
+                value: 6,
+                message: "La contraseña debe tener al menos 6 caracteres.",
+              },
+            })}
+            error={errors.password ? errors.password.message : ""}
+          />
 
-              <span className='text-sm text-gray-500 hover:text-red-600 hover:underline cursor-pointer'>
-                Ha olvidado su contraseña?
-              </span>
+          {/* Enlace para recuperar contraseña */}
+          <span className="text-sm text-gray-500 hover:text-red-600 hover:underline cursor-pointer">
+            ¿Has olvidado tu contraseña?
+          </span>
 
-              {isLoading ?(
-                <Loading/>
-              ):( <Button
-                type='submit'
-                label='Ingresar'
-                className='w-full h-10 bg-red-700 text-white rounded-full'
-              />
-                )}
-            </div>
-          </form>
-        </div>
+          {/* Botón de inicio de sesión */}
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Button
+              type="submit"
+              label="Ingresar"
+              className="w-full h-10 bg-red-700 text-white rounded-full hover:bg-red-800 transition-colors"
+            />
+          )}
+        </form>
       </div>
     </div>
   );

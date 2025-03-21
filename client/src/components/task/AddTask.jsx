@@ -11,6 +11,7 @@ import { useCreateTaskMutation, useUpdateTaskMutation } from "../../redux/slices
 import { useGetTeamListQuery } from "../../redux/slices/api/userApiSlice";
 import { toast } from "sonner";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../../utils/firebase"; // Importa el servicio de Firebase Storage
 
 
 const LISTS = ["PENDIENTE", "EN PROGRESO", "COMPLETADA"];
@@ -204,7 +205,7 @@ const AddTask = ({ open, setOpen, task }) => {
                     className="hidden"
                     id="imgUpload"
                     onChange={handleSelect}
-                    accept=".jpg, .png, .jpeg"
+                    accept=".jpg, .png, .jpeg, .docx, .txt"
                     multiple={true}
                   />
                   <BiImages />

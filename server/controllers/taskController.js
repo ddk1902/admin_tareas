@@ -44,7 +44,6 @@ export const createTask = async (req, res) => {
     res
       .status(200)
       .json({ status: true, task, message: "Tarea creada con éxito.!." });
-      window.location.reload();
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });

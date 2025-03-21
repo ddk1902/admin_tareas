@@ -30,7 +30,7 @@ const TaskTable = ({ tasks }) => {
         <th className='py-2'>Título de la tarea</th>
         <th className='py-2'>Prioridad</th>
         <th className='py-2'>Responsables</th>
-        <th className='py-2 hidden md:block'>Creada en:</th>
+        <th className='py-2 hidden md:block'>Vence en:</th>
       </tr>
     </thead>
   );
