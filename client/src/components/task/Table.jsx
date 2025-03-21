@@ -5,21 +5,22 @@ import {
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
   MdKeyboardDoubleArrowUp,
+  MdKeyboardDoubleArrowDown,
 } from "react-icons/md";
 import { toast } from "sonner";
 import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../../utils";
 import clsx from "clsx";
-import { FaList } from "react-icons/fa";
+import { FaEquals, FaList } from "react-icons/fa";
 import UserInfo from "../UserInfo";
 import Button from "../Button";
 import ConfirmatioDialog from "../Dialogs";
 
-const ICONS = {
-  alta: <MdKeyboardDoubleArrowUp />,
-  media: <MdKeyboardArrowUp />,
-  baja: <MdKeyboardArrowDown />,
+export const ICONS = {
+  alta: <MdKeyboardDoubleArrowUp className="text-red-600" title="Prioridad Alta" />, // Prioridad alta (flecha doble hacia arriba)
+  media: <MdKeyboardArrowUp className="text-yellow-600" title="Prioridad Media" />,   // Prioridad media (flecha hacia arriba)
+  baja: <MdKeyboardDoubleArrowDown className="text-blue-600" title="Prioridad Baja" />, // Prioridad baja (flecha doble hacia abajo)
+  normal: <FaEquals className="text-green-600" title="Prioridad Normal" />, // Prioridad normal (flecha hacia abajo)
 };
-
 const Table = ({ tasks }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selected, setSelected] = useState(null);

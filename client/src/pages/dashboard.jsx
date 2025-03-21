@@ -122,7 +122,7 @@ const UserTable = ({ users }) => {
       <tr className='text-black  text-left'>
         <th className='py-2'>Nombre</th>
         <th className='py-2'>Estado</th>
-        <th className='py-2'>Registrado en:</th>
+        <th className='py-2'>Registrado:</th>
       </tr>
     </thead>
   );
@@ -274,7 +274,7 @@ const Dashboard = () => {
 
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
         {/* /left */}
-        <TaskTable tasks={data?.last10Task} />
+        <TaskTable tasks={data?.last20Task} />
 
         {/* /right */}
         <UserTable users={data?.users} />

@@ -5,12 +5,13 @@ import {
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
   MdKeyboardDoubleArrowUp,
+  MdKeyboardDoubleArrowDown,
 } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../utils";
 import TaskDialog from "./task/TaskDialog";
 import { BiMessageAltDetail } from "react-icons/bi";
-import { FaList } from "react-icons/fa";
+import { FaEquals, FaList } from "react-icons/fa";
 import UserInfo from "./UserInfo";
 import { IoMdAdd } from "react-icons/io";
 import AddSubTask from "./task/AddSubTask";
@@ -18,7 +19,8 @@ import AddSubTask from "./task/AddSubTask";
 const ICONS = {
   alta: <MdKeyboardDoubleArrowUp />,
   media: <MdKeyboardArrowUp />,
-  baja: <MdKeyboardArrowDown />,
+  baja: <MdKeyboardDoubleArrowDown />,
+  normal:<FaEquals />,
 };
 
 const TaskCard = ({ task }) => {
@@ -36,7 +38,7 @@ const TaskCard = ({ task }) => {
             )}
           >
             <span className='text-lg'>{ICONS[task?.priority]}</span>
-            <span className='uppercase'>{task?.priority} Prioridad</span>
+            <span className='uppercase'>Prioridad {task?.priority} </span>
           </div>
 
           {user?.data?.isAdmin && <TaskDialog task={task} />}

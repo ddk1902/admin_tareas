@@ -6,13 +6,14 @@ import { GrInProgress } from "react-icons/gr";
 import {
   MdKeyboardAlt,
   MdKeyboardArrowDown,
-  MdKeyboardArrowRight,
+  MdKeyboardDoubleArrowDown,
   MdKeyboardArrowUp,
   MdKeyboardDoubleArrowUp,
   MdOutlineDoneAll,
   MdOutlineMessage,
   MdTaskAlt,
 } from "react-icons/md";
+import { FaEquals } from "react-icons/fa6";
 import { RxActivityLog } from "react-icons/rx";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -32,8 +33,8 @@ const assets = [
 const ICONS = {
   alta: <MdKeyboardDoubleArrowUp />,
   media: <MdKeyboardArrowUp />,
-  normal: <MdKeyboardArrowRight/>,
-  baja: <MdKeyboardArrowDown />,
+  normal: <FaEquals />,
+  baja: <MdKeyboardDoubleArrowDown />,
 };
 
 const bgColor = {
