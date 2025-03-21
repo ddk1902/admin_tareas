@@ -4,7 +4,9 @@ import React, { useState } from "react";
 import { FaBug, FaTasks, FaThumbsUp, FaUser } from "react-icons/fa";
 import { GrInProgress } from "react-icons/gr";
 import {
+  MdKeyboardAlt,
   MdKeyboardArrowDown,
+  MdKeyboardArrowRight,
   MdKeyboardArrowUp,
   MdKeyboardDoubleArrowUp,
   MdOutlineDoneAll,
@@ -30,6 +32,7 @@ const assets = [
 const ICONS = {
   alta: <MdKeyboardDoubleArrowUp />,
   media: <MdKeyboardArrowUp />,
+  normal: <MdKeyboardArrowRight/>,
   baja: <MdKeyboardArrowDown />,
 };
 
@@ -126,7 +129,7 @@ const TaskDetails = () => {
                 </div>
 
                 <p className='text-gray-500'>
-                  Created At: {new Date(task?.date).toDateString()}
+                  Creada en: {new Date(task?.date).toDateString()}
                 </p>
 
                 <div className='flex items-center gap-8 p-4 border-y border-gray-200'>
@@ -145,7 +148,7 @@ const TaskDetails = () => {
 
                 <div className='space-y-4 py-6'>
                   <p className='text-gray-600 font-semibold test-sm'>
-                    Responsable/s/es
+                    Responsable/es
                   </p>
                   <div className='space-y-3'>
                     {task?.team?.map((m, index) => (

@@ -8,14 +8,36 @@ import {
 import { LuClipboardEdit } from "react-icons/lu";
 import { FaNewspaper, FaUsers } from "react-icons/fa";
 import { FaArrowsToDot } from "react-icons/fa6";
-import moment from "moment";
 import Loading from "../components/Loader";
-import { summary } from "../assets/data";
 import clsx from "clsx";
-import { Chart } from "../components/Chart";
 import { BGS, PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
 import UserInfo from "../components/UserInfo";
 import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice";
+import moment from "moment";
+import "moment/locale/es"; // Importa la localización en español
+
+// Configura moment para usar español globalmente
+moment.locale("es");
+// Personaliza los textos relativos
+moment.updateLocale("es", {
+  relativeTime: {
+    future: "en %s", // "en 5 minutos"
+    past: "hace %s", // "hace 5 minutos"
+    s: "unos segundos", // Menos de un minuto
+    ss: "%d segundos", // Varios segundos
+    m: "un minuto", // 1 minuto
+    mm: "%d minutos", // Varios minutos
+    h: "una hora", // 1 hora
+    hh: "%d horas", // Varias horas
+    d: "un día", // 1 día
+    dd: "%d días", // Varios días
+    M: "un mes", // 1 mes
+    MM: "%d meses", // Varios meses
+    y: "un año", // 1 año
+    yy: "%d años", // Varios años
+  },
+});
+
 
 const TaskTable = ({ tasks }) => {
   const ICONS = {

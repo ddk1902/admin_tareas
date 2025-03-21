@@ -1,27 +1,29 @@
 export const formatDate = (date) => {
-  // Get the month, day, and year
-  const month = date.toLocaleString("es-ES", { month: "short" });
-  const day = date.getDate();
-  const year = date.getFullYear();
+  if (!date || isNaN(new Date(date))) {
+    return "Fecha inválida"; // Manejo seguro si la fecha es inválida
+  }
 
-  const formattedDate = `${day}-${month}-${year}`;
+  const formattedDate = new Date(date).toLocaleDateString("es-ES", {
+    day: "numeric",
+    month: "short", // Mes abreviado (ejemplo: "oct")
+    year: "numeric",
+  });
 
-  return formattedDate;
+  return formattedDate.replace(/ /g, "-").toLowerCase(); // Formato: "25-oct-2023"
 };
 
 export function dateFormatter(dateString) {
   const inputDate = new Date(dateString);
 
   if (isNaN(inputDate)) {
-    return "Invalid Date";
+    return "Fecha inválida"; // Manejo seguro si la fecha es inválida
   }
 
   const year = inputDate.getFullYear();
-  const month = String(inputDate.getMonth() + 1).padStart(2, "0");
-  const day = String(inputDate.getDate()).padStart(2, "0");
+  const month = String(inputDate.getMonth() + 1).padStart(2, "0"); // Mes con dos dígitos
+  const day = String(inputDate.getDate()).padStart(2, "0"); // Día con dos dígitos
 
-  const formattedDate = `${year}-${month}-${day}`;
-  return formattedDate;
+  return `${year}-${month}-${day}`; // Formato: "2023-10-25"
 }
 
 /* export function getInitials(name) {
