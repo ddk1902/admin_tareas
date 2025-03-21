@@ -3,13 +3,13 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Textbox from "../components/Textbox";
 import Button from "../components/Button";
-import { auth, signInWithEmailAndPassword } from "../utils/firebase"; // Importa Firebase Auth
+import { auth, signInWithEmailAndPassword } from "../utils/firebase"; // Importa desde firebase.js
 import { toast } from "sonner";
 import Loading from "../components/Loader";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false); // Estado para manejar la carga
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -21,23 +21,22 @@ const Login = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        navigate("/dashboard"); // Redirigir al dashboard si el usuario está autenticado
+        navigate("/dashboard");
       }
     });
 
-    return () => unsubscribe(); // Limpia el listener cuando el componente se desmonta
+    return () => unsubscribe();
   }, [navigate]);
 
   // Manejar el envío del formulario
   const submitHandler = async (data) => {
-    setIsLoading(true); // Activar estado de carga
+    setIsLoading(true);
     try {
       const { email, password } = data;
 
       // Intentar iniciar sesión con Firebase
       await signInWithEmailAndPassword(auth, email, password);
 
-      // Si el inicio de sesión es exitoso, redirigir al dashboard
       toast.success("Inicio de sesión exitoso.");
       navigate("/dashboard");
     } catch (error) {
@@ -48,9 +47,9 @@ const Login = () => {
           : error.code === "auth/user-not-found"
           ? "Usuario no encontrado."
           : "Algo salió mal. Inténtalo de nuevo.";
-      toast.error(errorMessage); // Mostrar mensaje de error específico
+      toast.error(errorMessage);
     } finally {
-      setIsLoading(false); // Desactivar estado de carga
+      setIsLoading(false);
     }
   };
 
@@ -59,9 +58,19 @@ const Login = () => {
       {/* Lado izquierdo: Logo y descripción */}
       <div className="w-full lg:w-2/3 flex flex-col items-center justify-center">
         <div className="w-full md:max-w-lg 2xl:max-w-3xl flex flex-col items-center justify-center gap-5 md:gap-y-10">
+          {/* Logo */}
+          <img
+            src="/assets/logo_senepa.png" // Ruta relativa al archivo en la carpeta public
+            alt="Logo"
+            className="w-64 h-74" // Ajusta el tamaño según sea necesario
+          />
+
+          {/* Título */}
           <p className="text-4xl md:text-6xl 2xl:text-7xl font-black text-center text-red-700">
             Administrador de Tareas
           </p>
+
+          {/* Descripción */}
           <p className="text-xl text-center text-gray-600">
             Gestiona tus tareas y proyectos de manera eficiente.
           </p>
@@ -81,7 +90,7 @@ const Login = () => {
 
           {/* Campo de correo electrónico */}
           <Textbox
-            placeholder="ejemplo@correo.com"
+            placeholder=""
             type="email"
             name="email"
             label="Correo Electrónico"
@@ -98,7 +107,7 @@ const Login = () => {
 
           {/* Campo de contraseña */}
           <Textbox
-            placeholder="Contraseña"
+            placeholder=""
             type="password"
             name="password"
             label="Contraseña"

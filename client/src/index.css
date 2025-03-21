@@ -110,8 +110,8 @@ circle {
 @keyframes pulse {
   0% {
     transform: scale(0.8);
-    background-color: #b3d4fc;
-    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 0 rgba(55, 124, 193, 0.7);
   }
 
   50% {
