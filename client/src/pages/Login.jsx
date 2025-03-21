@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Textbox from "../components/Textbox";
 import Button from "../components/Button";
-import { auth, signInWithEmailAndPassword } from "../utils/firebase"; // Importa desde firebase.js
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../redux/slices/api/authApiSlice";
 import { toast } from "sonner";
 import Loading from "../components/Loader";
+import { setCredentials } from "../redux/slices/authSlice";
 
 const Login = () => {
+  const { user } = useSelector((state) => state.auth); // Obtener el estado del usuario
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -17,39 +20,26 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  // Verificar si el usuario ya está autenticado
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        navigate("/dashboard");
-      }
-    });
+  const [login, { isLoading }] = useLoginMutation(); // Hook para iniciar sesión
 
-    return () => unsubscribe();
-  }, [navigate]);
+  // Redirigir al usuario si ya está autenticado
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
 
   // Manejar el envío del formulario
   const submitHandler = async (data) => {
-    setIsLoading(true);
     try {
-      const { email, password } = data;
-
-      // Intentar iniciar sesión con Firebase
-      await signInWithEmailAndPassword(auth, email, password);
-
-      toast.success("Inicio de sesión exitoso.");
-      navigate("/dashboard");
+      const result = await login(data).unwrap(); // Intentar iniciar sesión
+      console.log("Inicio de sesión exitoso:", result);
+      dispatch(setCredentials(result)); // Guardar las credenciales en Redux
+      navigate("/dashboard"); // Redirigir al dashboard
     } catch (error) {
-      console.error("Error al iniciar sesión:", error.message);
-      const errorMessage =
-        error.code === "auth/wrong-password"
-          ? "Contraseña incorrecta."
-          : error.code === "auth/user-not-found"
-          ? "Usuario no encontrado."
-          : "Algo salió mal. Inténtalo de nuevo.";
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
+      console.error("Error al iniciar sesión:", error);
+      const errorMessage = error?.data?.message || "Credenciales incorrectas. Inténtalo de nuevo.";
+      toast.error(errorMessage); // Mostrar mensaje de error específico
     }
   };
 
@@ -58,19 +48,15 @@ const Login = () => {
       {/* Lado izquierdo: Logo y descripción */}
       <div className="w-full lg:w-2/3 flex flex-col items-center justify-center">
         <div className="w-full md:max-w-lg 2xl:max-w-3xl flex flex-col items-center justify-center gap-5 md:gap-y-10">
-          {/* Logo */}
-          <img
+        <img
             src="/assets/logo_senepa.png" // Ruta relativa al archivo en la carpeta public
             alt="Logo"
-            className="w-64 h-74" // Ajusta el tamaño según sea necesario
+            className="w-45 h-45 mb-2" // Logo más pequeño y margen reducido
           />
-
-          {/* Título */}
           <p className="text-4xl md:text-6xl 2xl:text-7xl font-black text-center text-red-700">
             Administrador de Tareas
           </p>
-
-          {/* Descripción */}
+       
           <p className="text-xl text-center text-gray-600">
             Gestiona tus tareas y proyectos de manera eficiente.
           </p>
