@@ -83,10 +83,14 @@ const Sidebar = () => {
   return (
     <div className='w-full  h-full flex flex-col gap-6 p-5'>
       <h1 className='flex gap-1 items-center'>
-        <p className='bg-red-600 p-2 rounded-full'>
-          <MdOutlineAddTask className='text-white text-2xl font-black' />
-        </p>
-        <span className='text-2xl font-bold text-black'>UPCI</span>
+      <div className='bg-white p-5 rounded-full'>
+  <img
+    src='/assets/logo_senepa.png' // Ruta relativa al archivo en la carpeta public
+    alt='Logo'
+    className='w-30 h-30' // Ajusta el tamaño del logo según sea necesario
+  />
+   </div>
+        <span className='text-2xl font-bold text-red-600'>Administrador de tareas</span>
       </h1>
 
       <div className='flex-1 flex flex-col gap-y-5 py-8'>
