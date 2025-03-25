@@ -53,8 +53,8 @@ const TaskTable = ({ tasks }) => {
       <tr className='text-black text-left'>
         <th className='py-2'>Título de la tarea</th>
         <th className='py-2'>Prioridad</th>
-        <th className='py-2'>Responsables</th>
-        <th className='py-2 hidden md:block'>Vence en:</th>
+        <th className='py-2'>Team</th>
+        <th className='py-2 '>Vence:</th>
       </tr>
     </thead>
   );
@@ -80,7 +80,7 @@ const TaskTable = ({ tasks }) => {
         </div>
       </td>
 
-      <td className='py-2'>
+      <td className='py-4'>
         <div className='flex'>
           {task.team.map((m, index) => (
             <div

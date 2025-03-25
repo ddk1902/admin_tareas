@@ -33,7 +33,6 @@ const Login = () => {
   const submitHandler = async (data) => {
     try {
       const result = await login(data).unwrap(); // Intentar iniciar sesión
-      console.log("Inicio de sesión exitoso:", result);
       dispatch(setCredentials(result)); // Guardar las credenciales en Redux
       navigate("/dashboard"); // Redirigir al dashboard
     } catch (error) {

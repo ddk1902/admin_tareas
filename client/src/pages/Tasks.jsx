@@ -28,7 +28,7 @@ const Tasks = () => {
   const params = useParams();
   const [selected, setSelected] = useState(0);
   const [open, setOpen] = useState(false);
-
+  //const [loading,setLoading]=useState(false)
   const status = params?.status || ""; // Estado de la tarea desde la URL
 
   const { data, isLoading } = useGetAllTaskQuery({

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Notice from "../models/notification.js";
 import Task from "../models/task.js";
 import User from "../models/user.js";
@@ -50,58 +51,6 @@ export const createTask = async (req, res) => {
   }
 };
 
-/* export const duplicateTask = async (req, res) => {
-  console.log("Params:", req.params); // Depuración
-
-  const { id } = req.params;
-
-  if (!id || id.trim() === "") {
-    return res.status(400).json({ status: false, message: "ID inválido" });
-  }
-
-  try {
-    const task = await Task.findById(id);
-
-    if (!task) {
-      return res.status(404).json({ status: false, message: "Tarea no encontrada" });
-    }
-
-    const newTask = await Task.create({
-      ...task.toObject(),
-      title: task.title + " - Duplicado",
-    });
-
-    newTask.team = task.team;
-    newTask.subTasks = task.subTasks;
-    newTask.assets = task.assets;
-    newTask.priority = task.priority;
-    newTask.stage = task.stage;
-
-    await newTask.save();
-
-    let text = "Una nueva tarea le ha sido asignada a usted";
-    if (task.team.length > 1) {
-      text = text + ` y ${task.team.length - 1} otros.`;
-    }
-
-    text =
-      text +
-      ` La tarea es de  ${task.priority} prioridad, por favor verifique. La fecha de la tareas es: ${task.date.toDateString()}. Gracias!!!`;
-
-    await Notice.create({
-      team: task.team,
-      text,
-      task: newTask._id,
-    });
-
-    res
-      .status(200)
-      .json({ status: true, message: "Tarea duplicada exitosamente." });
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json({ status: false, message: error.message });
-  }
-}; */
 export const duplicateTask = async (req, res) => {
   try {
     const { id } = req.params;
@@ -187,7 +136,7 @@ export const dashboardStatistics = async (req, res) => {
       .limit(10)
       .sort({ _id: -1 });
 
-    //   group task by stage and calculate counts
+    // Group tasks by stage and calculate counts
     const groupTaskks = allTasks.reduce((result, task) => {
       const stage = task.stage;
 
@@ -210,7 +159,7 @@ export const dashboardStatistics = async (req, res) => {
       }, {})
     ).map(([name, total]) => ({ name, total }));
 
-    // calculate total tasks
+    // Calculate total tasks
     const totalTasks = allTasks?.length;
     const last20Task = allTasks?.slice(0, 20);
 
@@ -274,27 +223,24 @@ export const getTasks = async (req, res) => {
     return res.status(500).json({ status: false, message: "Error interno del servidor." });
   }
 };
+
 export const getTask = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const task = await Task.findById(id)
-      .populate({
-        path: "team",
-        select: "name title role email",
-      })
-      .populate({
-        path: "activities.by",
-        select: "name",
-      });
+    const task = await Task.findById(id);
+
+    if (!task) {
+      return res.status(404).json({ status: false, message: "Tarea no encontrada" });
+    }
 
     res.status(200).json({
       status: true,
       task,
     });
   } catch (error) {
-    console.log(error);
-    return res.status(400).json({ status: false, message: error.message });
+    console.error("Error en getTask:", error);
+    res.status(500).json({ status: false, message: "Error interno del servidor" });
   }
 };
 
@@ -327,26 +273,44 @@ export const createSubTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { title, date, team, stage, priority, assets } = req.body;
+    const {id} = req.params; // Extraer el ID de los parámetros
+    const updatedData = req.body;
+
+    console.log("ID recibido:",id); // Log del ID recibido
+    console.log("Datos recibidos para actualizar:", updatedData); // Log de los datos recibidos
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ status: false, message: "ID de tarea no válido" });
+    }
 
     const task = await Task.findById(id);
 
-    task.title = title;
-    task.date = date;
-    task.priority = priority.toLowerCase();
-    task.assets = assets;
-    task.stage = stage.toLowerCase();
-    task.team = team;
+    if (!task) {
+      return res.status(404).json({ status: false, message: "Tarea no encontrada" });
+    }
+
+    // Normalizar los valores recibidos
+    if (updatedData.priority) {
+      updatedData.priority = updatedData.priority.toLowerCase();
+    }
+    if (updatedData.stage) {
+      updatedData.stage = updatedData.stage.toLowerCase();
+    }
+
+    // Actualiza los campos de la tarea
+    Object.assign(task, updatedData);
 
     await task.save();
 
-    res
-      .status(200)
-      .json({ status: true, message: "Tarea duplicada exitosamente." });
+    console.log("Tarea actualizada en la base de datos:", task); // Log de la tarea actualizada
+
+    res.status(200).json({
+      status: true,
+      message: "Tarea actualizada exitosamente.",
+    });
   } catch (error) {
-    console.log(error);
-    return res.status(400).json({ status: false, message: error.message });
+    console.error("Error en updateTask:", error);
+    res.status(500).json({ status: false, message: "Error interno del servidor" });
   }
 };
 
@@ -390,7 +354,6 @@ export const deleteRestoreTask = async (req, res) => {
         { $set: { isTrashed: false } }
       );
     }
-
     res.status(200).json({
       status: true,
       message: `Operación realizada exitosamente.`,

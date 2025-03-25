@@ -25,7 +25,7 @@ const UserAvatar = () => {
       await logoutUser().unwrap();
       navigate("/log-in");
       dispatch(logout());
-      toast.success("Se ha cerrado la sesiòn..!");
+      toast.success("Se ha cerrado la sesión..!");
     } catch (error) {
       toast.error("Algo salió mal, inténtelo de nuevo en unos minutos");
     }

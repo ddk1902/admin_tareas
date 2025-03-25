@@ -45,7 +45,8 @@ export function dateFormatter(dateString) {
 export const PRIOTITYSTYELS = {
   alta: "text-red-600",
   media: "text-yellow-600",
-  baja: "text-blue-600",
+  normal: "text-blue-600",
+  baja: "text-green-600",
 };
 
 export const TASK_TYPE = {

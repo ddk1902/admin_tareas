@@ -12,24 +12,33 @@ import { useGetTeamListQuery } from "../../redux/slices/api/userApiSlice";
 import { toast } from "sonner";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../utils/firebase"; // Importa el servicio de Firebase Storage
-
+import { dateFormatter } from "../../utils";
 
 const LISTS = ["PENDIENTE", "EN PROGRESO", "COMPLETADA"];
-const PRIORIRY = ["ALTA", "MEDIA", "NORMAL","BAJA"];
+const PRIORIRY = ["ALTA", "MEDIA", "NORMAL", "BAJA"];
 
 const AddTask = ({ open, setOpen, task }) => {
+  const defaultValues = {
+    title: task?.title || "",
+    date: dateFormatter(task?.date || new Date()),
+    team: task?.team || [],
+    stage: task?.stage?.toUpperCase() || LISTS[0],
+    priority: task?.priority?.toUpperCase() || PRIORIRY[0],
+    assets: task?.assets || [],
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues });
 
-  const [team, setTeam] = useState(task?.team || []);
+  const [team, setTeam] = useState(task?.team || []); // Estado para los responsables seleccionados
   const [stage, setStage] = useState(task?.stage?.toUpperCase() || LISTS[0]);
-  const [priority, setPriority] = useState(task?.priority?.toUpperCase() || PRIORIRY[3]);
-  const [assets, setAssets] = useState([]);
+  const [priority, setPriority] = useState(task?.priority?.toUpperCase() || PRIORIRY[0]);
+  const [assets, setAssets] = useState([]); // Archivos seleccionados para subir
   const [uploading, setUploading] = useState(false);
-  const [uploadedFileURLs, setUploadedFileURLs] = useState([]); // Estado para almacenar las URLs de los archivos subidos
+  const [uploadedFileURLs, setUploadedFileURLs] = useState([]); // URLs de los archivos subidos
 
   const { data: users, isLoading: isUsersLoading, error: usersError } = useGetTeamListQuery();
   const [createTask, { isLoading }] = useCreateTaskMutation();
@@ -123,7 +132,7 @@ const AddTask = ({ open, setOpen, task }) => {
       toast.success(res.message);
       setTimeout(() => {
         setOpen(false);
-      }, 500);
+      }, 800);
     } catch (err) {
       console.error(err);
       toast.error(err?.data?.message || err.error);
@@ -179,7 +188,7 @@ const AddTask = ({ open, setOpen, task }) => {
                   placeholder=""
                   type="date"
                   name="date"
-                  label="Fecha de la tarea"
+                  label="Fecha de vencimiento de la tarea"
                   className="w-full rounded"
                   register={register("date", { required: "La fecha es obligatoria!" })}
                   error={errors.date ? errors.date.message : ""}
