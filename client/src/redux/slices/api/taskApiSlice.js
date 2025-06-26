@@ -5,12 +5,13 @@ const TASKS_URL = '/task';
 
 export const taskApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getDashboardStats: builder.query({
+  getDashboardStats: builder.query({
       query: () => ({
         url: `${TASKS_URL}/dashboard`,
-        method: 'GET',
-        credentials: 'include', // Incluye cookies si es necesario
+        method: "GET",
+        credentials: "include",
       }),
+      providesTags: ["Tasks"],
     }),
     getAllTask: builder.query({
         query: ({strQuery,isTrashed,search}) => ({
@@ -18,6 +19,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
           method: 'GET',
           credentials: 'include', // Incluye cookies si es necesario
         }),
+        providesTags: ['Tasks'],
       }),
 
       createTask: builder.mutation({
@@ -27,13 +29,15 @@ export const taskApiSlice = apiSlice.injectEndpoints({
           body: data,
           credentials: 'include',
         }),
+        invalidatesTags: ['Tasks'],
       }),
-      trashTask: builder.mutation({
-        query: (id) => ({
-          url: `${TASKS_URL}/${id}`,
-          method: 'DELETE',
-          credentials: 'include',
-        }),
+    trashTask: builder.mutation({
+  query: ({ id, actionType = 'delete' }) => ({
+    url: `${TASKS_URL}/delete-restore/${id}?actionType=${actionType}`,
+    method: 'DELETE',
+    credentials: 'include',
+  }),
+  invalidatesTags: ['Tasks'],
       }),
       restoreTask: builder.mutation({
         query: (id) => ({
@@ -41,6 +45,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
           method: 'PUT',
           credentials: 'include',
         }),
+        invalidatesTags: ['Tasks'],
       }),
       duplicateTask: builder.mutation({
         query: (id) => ({
@@ -49,6 +54,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
           body: {},
           credentials: 'include',
         }),
+        invalidatesTags: ['Tasks'],
       }),
       updateTask: builder.mutation({
         query: (data) => ({
@@ -57,7 +63,26 @@ export const taskApiSlice = apiSlice.injectEndpoints({
           body: data,
           credentials: 'include',
         }),
+        invalidatesTags: ['Tasks'],
       }),
+
+      getTaskById: builder.query({
+      query: (_id) => ({
+        url: `${TASKS_URL}/${_id}`, // Ejemplo: /task/65f34e7d90d5f821c0844a6b
+        method: "GET",
+        credentials: "include",
+      }),
+      providesTags: ["Task"], // Si usas tags específicos
+    }),
+    createSubTask: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `${TASKS_URL}/create-subtask/${id}`,
+        method: 'PUT',
+        body: data,
+        credentials: 'include',
+      }),
+      invalidatesTags: ['Tasks'],
+  }),
   }),
 });
 
@@ -95,5 +120,6 @@ export const { useGetDashboardStatsQuery,
   useDuplicateTaskMutation,
   useTrashTaskMutation,
   useRestoreTaskMutation,
-  useUpdateTaskMutation
+  useUpdateTaskMutation,
+  useGetTaskByIdQuery, useCreateSubTaskMutation
 } = taskApiSlice;

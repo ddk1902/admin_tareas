@@ -28,7 +28,7 @@ export const registerUser = async (req, res) => {
     if (user) {
       isAdmin ? createJWT(res, user._id) : null;
 
-      user.password = undefined;
+      user.password = "UPCI2025";
 
       res.status(201).json(user);
     } else {
@@ -139,7 +139,8 @@ export const updateUserProfile = async (req, res) => {
       user.name = req.body.name || user.name;
       user.title = req.body.title || user.title;
       user.role = req.body.role || user.role;
-
+      user.email = req.body.email || user.email;
+      user.isActive = req.body.isActive !== undefined ? req.body.isActive : user.isActive;  
       const updatedUser = await user.save();
 
       user.password = undefined;

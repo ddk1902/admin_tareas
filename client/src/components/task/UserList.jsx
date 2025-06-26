@@ -6,19 +6,50 @@ import { getInitials } from "../../utils";
 import { MdCheck } from "react-icons/md";
 
 const UserList = ({ users, selectedUsers, setSelectedUsers }) => {
-  const handleChange = (selected) => {
-    setSelectedUsers(selected); // Actualizar el estado externo
+  // Filtrar los usuarios disponibles excluyendo a los ya seleccionados
+  const availableUsers = users?.filter(
+    (user) => !selectedUsers.some((selected) => selected._id === user._id)
+  );
+
+  // Elimina un usuario específico del array selectedUsers
+  const removeUser = (userToRemove) => {
+    setSelectedUsers(
+      selectedUsers.filter((user) => user._id !== userToRemove._id)
+    );
   };
 
   return (
     <div>
       <p className="text-gray-700">Asignar tarea a:</p>
-      <Listbox value={selectedUsers} onChange={handleChange} multiple>
-        <div className="relative mt-1">
+
+      {/* Lista de usuarios seleccionados */}
+      <div className="mt-2 flex flex-wrap gap-2">
+        {selectedUsers?.length > 0 ? (
+          selectedUsers.map((user) => (
+            <div
+              key={user._id}
+              className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+            >
+              <span>{user.name}</span>
+              <button
+                type="button"
+                onClick={() => removeUser(user)}
+                className="text-red-500 hover:text-red-700 focus:outline-none"
+              >
+                &times;
+              </button>
+            </div>
+          ))
+        ) : (
+          <span className="text-gray-400 text-sm">Ningún usuario seleccionado</span>
+        )}
+      </div>
+
+      {/* Selector múltiple de usuarios */}
+      <Listbox value={selectedUsers} onChange={setSelectedUsers} multiple>
+        <div className="relative mt-3">
           <Listbox.Button className="relative w-full cursor-default rounded bg-white pl-3 pr-10 text-left px-3 py-2.5 2xl:py-3 border border-gray-300 sm:text-sm">
-            <span className="block truncate">
-              {selectedUsers?.map((user) => user.name).join(", ") || "Seleccionar usuarios"}
-            </span>
+            <span className="block truncate">Seleccionar usuarios</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <BsChevronExpand className="h-5 w-5 text-gray-400" aria-hidden="true" />
             </span>
@@ -31,7 +62,7 @@ const UserList = ({ users, selectedUsers, setSelectedUsers }) => {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="z-50 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-              {users?.map((user, index) => (
+              {availableUsers?.map((user, index) => (
                 <Listbox.Option
                   key={index}
                   className={({ active }) =>

@@ -11,7 +11,11 @@ export const formatDate = (date) => {
 
   return formattedDate.replace(/ /g, "-").toLowerCase(); // Formato: "25-oct-2023"
 };
-
+export const formatDateToInput = (date) => {
+  if (!date) return "";
+  const d = new Date(date);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
 export function dateFormatter(dateString) {
   const inputDate = new Date(dateString);
 

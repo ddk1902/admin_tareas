@@ -46,21 +46,25 @@ const AddUser = ({ open, setOpen, userData }) => {
   const [isConfirmationOpen, setIsConfirmationOpen] = React.useState(false);
 
   const handleOnSubmit = async () => {
+    
     const formData = getValues(); // Obtiene los valores actuales del formulario
+    console.log("Datos del formulario:", formData)
     console.log("Datos enviados desde el formulario:", formData);
 
     try {
       if (userData?._id) {
         // Verifica si el usuario ya existe
-        const hasChanges = Object.keys(formData).some(
-          (key) => formData[key] !== userData[key]
-        );
+              const hasChanges = Object.keys(formData).some((key) => {
+          const formValue = formData[key];
+          const userValue = userData[key];
 
-        if (!hasChanges && uploadFileURLs.length === 0) {
-          // Si no hay cambios ni archivos nuevos, muestra un mensaje y no envía la solicitud
-          toast.info("No se realizaron cambios.");
-          return;
-        }
+          // Para evitar errores en comparaciones de objetos o arrays
+          if (typeof formValue === 'object' && formValue !== null) {
+            return JSON.stringify(formValue) !== JSON.stringify(userValue);
+          }
+
+          return formValue !== userValue;
+        });
 
         // Agregar URLs de archivos subidos al formData
         formData.assets = uploadFileURLs;

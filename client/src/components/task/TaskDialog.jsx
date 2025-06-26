@@ -35,7 +35,7 @@ const TaskDialog = ({ task }) => {
       toast.success(res?.message || "Tarea duplicada exitosamente.");
 
       setTimeout(() => {
-        window.location.reload(); // Recarga la página
+       navigate(0); // Recarga la página
       }, 500);
     } catch (error) {
       console.error("Error duplicando tarea:", error);
@@ -64,7 +64,7 @@ const TaskDialog = ({ task }) => {
 
       setTimeout(() => {
         setOpenDialog(false);
-        window.location.reload(); // Recarga la página
+        navigate(0); // Recarga la página
       }, 800);
     } catch (error) {
       console.error("Error eliminando tarea:", error);
@@ -95,7 +95,7 @@ const TaskDialog = ({ task }) => {
       toast.success(response?.message || "Tarea actualizada exitosamente.");
 
       setTimeout(() => {
-        window.location.reload(); // Recarga la página
+       navigate(0); // Recarga la página
       }, 500);
     } catch (error) {
       console.error("Error editando tarea:", error);
@@ -105,11 +105,11 @@ const TaskDialog = ({ task }) => {
 
   // Elementos del menú
   const items = [
-    {
+ /*    {
       label: "Ver la tarea",
       icon: <AiTwotoneFolderOpen className="mr-2 h-5 w-5" aria-hidden="true" />,
       onClick: () => navigate(`/task/${task?._id}`),
-    },
+    }, */
     {
       label: "Editar",
       icon: <MdOutlineEdit className="mr-2 h-5 w-5" aria-hidden="true" />,
