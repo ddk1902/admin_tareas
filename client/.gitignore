@@ -27,3 +27,5 @@ dist-ssr
 .env
 package-lock.json
 firebase.js
+# Evitar incluir caché de gh-pages
+node_modules/.cache/
