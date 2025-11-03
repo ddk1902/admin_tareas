@@ -26,6 +26,7 @@ dist-ssr
 #Archivo de variables de entorno
 .env
 package-lock.json
-firebase.js
+firebase_real.js
+#firebase.js
 # Evitar incluir caché de gh-pages
 node_modules/.cache/

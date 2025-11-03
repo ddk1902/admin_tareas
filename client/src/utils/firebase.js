@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APP_FIREBASE_API_KEY,
-  authDomain: "tu-proyecto.firebaseapp.com",
+  authDomain: "todoapp-651a5.firebaseapp.com",
   projectId: "todoapp-651a5",
   storageBucket: "todoapp-651a5.appspot.com",
   messagingSenderId: "55781163126",
