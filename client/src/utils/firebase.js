@@ -1,5 +1,3 @@
-// firebase.example.js
-// Copiá esta plantilla y renombralá como firebase.js para uso local
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
