@@ -3,11 +3,14 @@ import mongoose from "mongoose";
 
 export const dbConnection = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
-
-    console.log("Conexión a la base de datos exitosa");
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("✅ MongoDB conectado");
   } catch (error) {
-    console.log("DB Error: " + error);
+    console.error("❌ Error al conectar con MongoDB:", error.message);
+    process.exit(1);
   }
 };
 
