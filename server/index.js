@@ -22,6 +22,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://admin-tareas.onrender.com",  // backend
+      "https://admin-tareas.vercel.app", // frontend
       "http://localhost:5173",              // para desarrollo local
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
