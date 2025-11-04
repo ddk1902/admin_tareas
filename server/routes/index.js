@@ -8,3 +8,6 @@ router.use("/user", userRoutes); //api/user/login
 router.use("/task", taskRoutes);
 
 export default router;
+
+console.log("✅ Rutas registradas: /api/user y /api/task");
+
