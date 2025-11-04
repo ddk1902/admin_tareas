@@ -45,6 +45,10 @@ fs.readdirSync(path.join(__dirname, "routes")).forEach(f => console.log(" -", f)
 // Rutas principales
 app.get("/", (req, res) => res.json({ message: "API de admin-tareas activa 🚀" }));
 app.use("/api", routes);
+app.post("/api/user/login", (req, res) => {
+  console.log("🔹 Llamada recibida en /api/user/login");
+  res.json({ ok: true });
+});
 
 // Manejo de errores
 app.use(routeNotFound);
