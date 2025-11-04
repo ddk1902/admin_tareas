@@ -21,6 +21,9 @@ router.post("/logout", logoutUser);
 
 router.get("/get-team", protectRoute, isAdminRoute, getTeamList);
 router.get("/notifications", protectRoute, getNotificationsList);
+router.get("/ping", (req, res) => {
+  res.json({ ok: true, message: "Ruta /api/user/ping activa ✅" });
+});
 
 router.put("/profile", protectRoute, updateUserProfile);
 router.put("/read-noti", protectRoute, markNotificationRead);
