@@ -12,6 +12,7 @@ dotenv.config();
 const app = express();
 
 dbConnection();
+console.log("🔌 Intentando conectar a MongoDB:", process.env.MONGODB_URI);
 
 app.use(
   cors({
