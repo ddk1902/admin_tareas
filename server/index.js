@@ -10,9 +10,12 @@ import { errorHandler, routeNotFound } from "./middlewares/errorMiddlewaves.js";
 dotenv.config();
 
 const app = express();
+console.log("🔍 NODE_ENV:", process.env.NODE_ENV);
+console.log("🔍 MONGODB_URI:", process.env.MONGODB_URI ? "definido" : "NO definido");
+console.log("🔍 JWT_SECRET:", process.env.JWT_SECRET ? "definido" : "NO definido");
 
 dbConnection();
-console.log("🔌 Intentando conectar a MongoDB:", process.env.MONGODB_URI);
+
 
 app.use(
   cors({
