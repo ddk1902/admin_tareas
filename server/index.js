@@ -1,32 +1,25 @@
-import cookieParser from "cookie-parser";
-import cors from "cors";
-import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
 import morgan from "morgan";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import { errorHandler, routeNotFound } from "./middlewares/errorMiddlewaves.js";
 import routes from "./routes/index.js";
 import { dbConnection } from "./utils/index.js";
+import { errorHandler, routeNotFound } from "./middlewares/errorMiddlewaves.js";
 
 dotenv.config();
-dbConnection();
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:3001",
-  "https://admin-tareas-e7kq-2eavcb3ui-diego-gomezs-projects-db6fbfde.vercel.app",
-  "https://admin-tareas.vercel.app",
-  "https://admin-tareasserver.vercel.app"
-];
+dbConnection();
 
 app.use(
   cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "DELETE", "PUT"],
+    origin: [
+      "http://localhost:3000",
+      "https://admin-tareas-e7kq-2eavcb3ui-diego-gomezs-projects-db6fbfde.vercel.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -36,30 +29,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-// Ver rutas disponibles
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-console.log("🧭 Rutas disponibles:");
-fs.readdirSync(path.join(__dirname, "routes")).forEach(f => console.log(" -", f));
-
-// Rutas principales
-app.get("/", (req, res) => res.json({ message: "API de admin-tareas activa 🚀" }));
+// ✅ Aquí montamos las rutas correctamente
 app.use("/api", routes);
-app.post("/api/user/login", (req, res) => {
-  console.log("🔹 Llamada recibida en /api/user/login");
-  res.json({ ok: true });
-});
 
-// Manejo de errores
+app.get("/", (req, res) => res.json({ message: "API de admin-tareas activa 🚀" }));
+
 app.use(routeNotFound);
 app.use(errorHandler);
 
-// Localhost solo
+// 👇 Solo escuchar localmente, no en Vercel
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => console.log(`Servidor corriendo en puerto: ${PORT}`));
+  app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
 }
 
-// 👇 Necesario para Vercel
-export default app;
+export default app; // 👈 NECESARIO para Vercel
+
 
