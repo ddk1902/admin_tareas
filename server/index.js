@@ -24,7 +24,6 @@ app.use(
       "https://admin-tareas.onrender.com",  // backend
       "http://localhost:5173",              // para desarrollo local
     ],
-    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -49,6 +48,6 @@ if (process.env.NODE_ENV !== "production") {
   app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
 }
 
-export default app; // 👈 NECESARIO para Vercel
+export default app; // 
 
 
