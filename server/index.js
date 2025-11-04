@@ -21,7 +21,9 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://admin-tareas-e7kq-2eavcb3ui-diego-gomezs-projects-db6fbfde.vercel.app"
+      "https://admin-tareas.onrender.com",  // backend
+      "http://localhost:5173",              // para desarrollo local
+    ],
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
