@@ -34,5 +34,6 @@ router
   .route("/:id")
   .put(protectRoute, isAdminRoute, activateUserProfile)
   .delete(protectRoute, isAdminRoute, deleteUserProfile);
+console.log("🔍 Rutas definidas:", router.stack.map(r => r.route?.path).filter(Boolean));
 
 export default router;
