@@ -43,12 +43,13 @@ app.use(routeNotFound);
 app.use(errorHandler);
 
 
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
+// Render necesita que el servidor escuche explícitamente
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Servidor corriendo en puerto ${PORT}`);
 });
+
 
 }
 
