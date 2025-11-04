@@ -44,6 +44,7 @@ app.use(errorHandler);
 
 
 const PORT = process.env.PORT || 5000;
+console.log("🧭 PORT (Render):", process.env.PORT);
 
 // Render necesita que el servidor escuche explícitamente
 app.listen(PORT, "0.0.0.0", () => {
