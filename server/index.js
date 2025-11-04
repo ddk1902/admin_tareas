@@ -31,6 +31,12 @@ app.use(cookieParser());
 
 app.use(morgan("dev"));
 app.use("/api", routes);
+import fs from "fs";
+
+console.log("🧭 Rutas disponibles:");
+fs.readdirSync("./routes").forEach(f => console.log(" -", f));
+
+app.get("/api/test", (req, res) => res.json({ ok: true }));
 
 app.use(routeNotFound);
 app.use(errorHandler);
