@@ -42,10 +42,15 @@ app.get("/", (req, res) => res.json({ message: "API de admin-tareas activa 🚀"
 app.use(routeNotFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Servidor corriendo en puerto ${PORT}`);
 });
+
+}
 
 export default app; // 
 
