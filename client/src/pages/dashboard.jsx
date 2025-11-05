@@ -17,6 +17,8 @@ import moment from "moment";
 import "moment/locale/es"; // Importa la localización en español
 import { PiEquals} from "react-icons/pi";
 import { useSelector } from "react-redux";
+// Configura moment para usar español globalmente
+moment.locale("es");
 // Personaliza los textos relativos
 moment.updateLocale("es", {
   relativeTime: {
