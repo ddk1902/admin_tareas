@@ -21,14 +21,13 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://admin-tareas.onrender.com",  // backend
-      "https://admin-tareas-e7kq.vercel.app/log-in", // frontend
-      "http://localhost:5173",              // para desarrollo local
+      "https://admin-tareas-e7kq.vercel.app",
+      "https://admin-tareas.onrender.com"
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
