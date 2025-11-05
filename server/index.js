@@ -21,10 +21,10 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://admin-tareas-e7kq.vercel.app",
-      "https://admin-tareas.onrender.com"
+      "https://admin-tareas-e7kq.vercel.app"
     ],
-    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,  // 👈 importante
   })
 );
 
