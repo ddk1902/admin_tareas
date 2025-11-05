@@ -5,6 +5,9 @@ const protectRoute = async (req, res, next) => {
   try {
     let token = req.cookies?.token;
 
+    // 👇 Agregá este log
+    console.log("🔐 Cookies recibidas:", req.cookies);
+
     if (token) {
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -22,13 +25,19 @@ const protectRoute = async (req, res, next) => {
     } else {
       return res
         .status(401)
-        .json({ status: false, message: "No autorizado, intente loguearse de nuevo..." });
+        .json({
+          status: false,
+          message: "No autorizado, intente loguearse de nuevo...",
+        });
     }
   } catch (error) {
-    console.error(error);
+    console.error("❌ Error en protectRoute:", error.message);
     return res
       .status(401)
-      .json({ status: false, message: "No autorizado, intente loguearse de nuevo..." });
+      .json({
+        status: false,
+        message: "No autorizado, intente loguearse de nuevo...",
+      });
   }
 };
 
