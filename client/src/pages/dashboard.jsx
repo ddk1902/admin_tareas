@@ -49,100 +49,123 @@ const TaskTable = ({ tasks }) => {
   };
 
   const TableHeader = () => (
-    <thead className='border-b border-gray-300 '>
-      <tr className='text-black text-left'>
-        <th className='py-2'>Título de la tarea</th>
-        <th className='py-2'>Prioridad</th>
-        <th className='py-2'>Responsable(s)</th>
-        <th className='py-4 '>Vence/Venció:</th>
+    <thead className="border-b border-gray-300">
+      <tr className="text-black text-left">
+        <th className="py-2">Título de la tarea</th>
+        <th className="py-2">Prioridad</th>
+        <th className="py-2">Responsable(s)</th>
+        <th className="py-4">Vence/Venció:</th>
+        {/* Solo mostrar columna Acciones si puede editar */}
+        <th className="py-2">Acciones</th>
       </tr>
     </thead>
   );
 
-  const TableRow = ({ task }) => (
-    <tr className='border-b border-gray-300 text-gray-600 hover:bg-gray-300/10'>
-      <td className='py-2'>
-        <div className='flex items-center gap-6'>
-          <div
-            className={clsx("w-6 h-6 rounded-full", TASK_TYPE[task.stage])}
-          />
+    const TableRow = ({ task }) => {
+    // Verificar si el usuario tiene permisos
+    const canEdit = user?.isAdmin || task.team.some(m => m._id === user?._id);
 
-          <p className='text-base text-black'>{task.title}</p>
-        </div>
-      </td>
+    return (
+      <tr className="border-b border-gray-300 text-gray-600 hover:bg-gray-300/10">
+        <td className="py-2">
+          <div className="flex items-center gap-6">
+            <div className={clsx("w-6 h-6 rounded-full", TASK_TYPE[task.stage])} />
+            <p className="text-base text-black">{task.title}</p>
+          </div>
+        </td>
 
-      <td className='py-2'>
-        <div className='flex gap-1 items-center'>
-          <span className={clsx("text-lg", PRIOTITYSTYELS[task.priority])}>
-            {ICONS[task.priority]}
-          </span>
-          <span className='capitalize'>{task.priority}</span>
-        </div>
-      </td>
+        <td className="py-2">
+          <div className="flex gap-1 items-center">
+            <span className={clsx("text-lg", PRIOTITYSTYELS[task.priority])}>
+              {ICONS[task.priority]}
+            </span>
+            <span className="capitalize">{task.priority}</span>
+          </div>
+        </td>
 
-      <td className='py-4'>
-        <div className='flex'>
-          {task.team.map((m, index) => (
-            <div
-              key={index}
-              className={clsx(
-                "w-7 h-7 rounded-full text-white flex items-center justify-center text-sm -mr-1",
-                BGS[index % BGS.length]
-              )}
-            >
-              <UserInfo user={m} />
-            </div>
-          ))}
-        </div>
-      </td>
-      <td className='py-2 hidden md:block'>
-        <span className='text-base text-gray-600'>
-          {moment(task?.date).fromNow()}
-        </span>
-      </td>
-    </tr>
-  );
-  return (
-    <>
-      <div className='w-full bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
-        <table className='w-full'>
-          <TableHeader />
-          <tbody>
-            {tasks?.map((task, id) => (
-              <TableRow key={id} task={task} />
+        <td className="py-4">
+          <div className="flex">
+            {task.team.map((m, index) => (
+              <div
+                key={index}
+                className={clsx(
+                  "w-7 h-7 rounded-full text-white flex items-center justify-center text-sm -mr-1",
+                  BGS[index % BGS.length]
+                )}
+              >
+                <UserInfo user={m} />
+              </div>
             ))}
-          </tbody>
-        </table>
-      </div>
-    </>
+          </div>
+        </td>
+
+        <td className="py-2 hidden md:block">
+          <span className="text-base text-gray-600">
+            {moment(task?.date).fromNow()}
+          </span>
+        </td>
+
+        {/* Solo mostrar acciones si el usuario puede editar */}
+        <td className="py-2">
+          {canEdit ? (
+            <div className="flex gap-2">
+              <button className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600">
+                Editar
+              </button>
+              <button className="px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600">
+                En progreso
+              </button>
+            </div>
+          ) : (
+            <span className="text-gray-400 text-xs">Sin permiso</span>
+          )}
+        </td>
+      </tr>
+    );
+  };
+
+  return (
+    <div className="w-full bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded">
+      <table className="w-full">
+        <TableHeader />
+        <tbody>
+          {tasks?.map((task, id) => (
+            <TableRow key={id} task={task} />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
 const Dashboard = () => {
+  const { user } = useSelector((state) => state.auth);
   const { data, isLoading, error } = useGetDashboardStatsQuery();
 
-  // Registrar los datos recibidos desde el backend
-  //console.log("Datos recibidos desde el backend:", data);
-
-  if (isLoading) {
+  if (isLoading)
     return (
-      <div className='py-10'>
+      <div className="py-10">
         <Loading />
       </div>
     );
-  }
 
   if (error) {
     console.error("Error al obtener los datos del dashboard:", error);
     return (
-      <div className='py-10 text-red-500 text-center'>
+      <div className="py-10 text-red-500 text-center">
         Error al cargar los datos del dashboard.
       </div>
     );
   }
 
-  const totals = data?.tasks || {};
+  // 🔹 Si no es admin, solo mostrar sus propias tareas
+  const filteredTasks = user?.isAdmin
+    ? data?.last20Task
+    : data?.last20Task?.filter((t) =>
+        t.team.some((m) => m._id === user?._id)
+      );
 
+  const totals = data?.tasks || {};
   const stats = [
     {
       _id: "1",
@@ -174,49 +197,35 @@ const Dashboard = () => {
     },
   ];
 
-  const Card = ({ label, count, bg, icon }) => {
-    return (
-      <div className='w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between'>
-        <div className='h-full flex flex-1 flex-col justify-between'>
-          <p className='text-base text-gray-600'>{label}</p>
-          <span className='text-2xl font-semibold'>{count}</span>
-          <span className='text-sm text-gray-400'>{""}</span>
-        </div>
-
-        <div
-          className={clsx(
-            "w-10 h-10 rounded-full flex items-center justify-center text-white",
-            bg
-          )}
-        >
-          {icon}
-        </div>
+  const Card = ({ label, count, bg, icon }) => (
+    <div className="w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between">
+      <div className="h-full flex flex-1 flex-col justify-between">
+        <p className="text-base text-gray-600">{label}</p>
+        <span className="text-2xl font-semibold">{count}</span>
       </div>
-    );
-  };
+
+      <div
+        className={clsx(
+          "w-10 h-10 rounded-full flex items-center justify-center text-white",
+          bg
+        )}
+      >
+        {icon}
+      </div>
+    </div>
+  );
 
   return (
-    <div className='h-full py-4'>
-      <div className='grid grid-cols-1 md:grid-cols-4 gap-5'>
+    <div className="h-full py-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         {stats.map(({ icon, bg, label, total }, index) => (
           <Card key={index} icon={icon} bg={bg} label={label} count={total} />
         ))}
       </div>
 
-      {/* Gráfico de prioridades */}
-      {/* <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
-        <h4 className='text-xl text-red-600 font-semibold'>
-          Gráfico de prioridades de tareas
-        </h4>
-        <Chart data={data?.graphData} />
-      </div> */}
-
-      <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-20 py-10'>
-        {/* /left */}
-        <TaskTable tasks={data?.last20Task} />
-
-        {/* /right */}
-       
+      <div className="w-full flex flex-col md:flex-row gap-4 2xl:gap-20 py-10">
+        {/* Tareas visibles según permisos */}
+        <TaskTable tasks={filteredTasks} user={user} />
       </div>
     </div>
   );

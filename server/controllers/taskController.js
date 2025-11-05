@@ -223,6 +223,27 @@ export const getTasks = async (req, res) => {
     return res.status(500).json({ status: false, message: "Error interno del servidor." });
   }
 };
+export const getUserTasks = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    const tasks = await Task.find({
+      team: { $in: [userId] },
+      isTrashed: false,
+    })
+      .populate("team", "name email role title")
+      .sort({ _id: -1 });
+
+    res.status(200).json({
+      status: true,
+      tasks,
+    });
+  } catch (error) {
+    console.error("Error en getUserTasks:", error);
+    res.status(500).json({ status: false, message: "Error interno del servidor." });
+  }
+};
+
 
 export const getTask = async (req, res) => {
   try {
@@ -273,11 +294,11 @@ export const createSubTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   try {
-    const {id} = req.params; // Extraer el ID de los parámetros
+    const { id } = req.params;
     const updatedData = req.body;
 
-    console.log("ID recibido:",id); // Log del ID recibido
-    console.log("Datos recibidos para actualizar:", updatedData); // Log de los datos recibidos
+    console.log("ID recibido:", id);
+    console.log("Datos recibidos para actualizar:", updatedData);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ status: false, message: "ID de tarea no válido" });
@@ -289,7 +310,19 @@ export const updateTask = async (req, res) => {
       return res.status(404).json({ status: false, message: "Tarea no encontrada" });
     }
 
-    // Normalizar los valores recibidos
+    // 🔒 Validar permisos:
+    // - Si el usuario NO es admin y NO forma parte del team asignado, bloquear.
+    const isOwner = task.team.map(String).includes(req.user.userId);
+    const isAdmin = req.user.isAdmin;
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({
+        status: false,
+        message: "No autorizado para modificar esta tarea.",
+      });
+    }
+
+    // Normalizar valores recibidos
     if (updatedData.priority) {
       updatedData.priority = updatedData.priority.toLowerCase();
     }
@@ -297,22 +330,23 @@ export const updateTask = async (req, res) => {
       updatedData.stage = updatedData.stage.toLowerCase();
     }
 
-    // Actualiza los campos de la tarea
+    // Actualizar tarea
     Object.assign(task, updatedData);
-
     await task.save();
 
-    console.log("Tarea actualizada en la base de datos:", task); // Log de la tarea actualizada
+    console.log("Tarea actualizada:", task);
 
     res.status(200).json({
       status: true,
       message: "Tarea actualizada exitosamente.",
+      task,
     });
   } catch (error) {
     console.error("Error en updateTask:", error);
     res.status(500).json({ status: false, message: "Error interno del servidor" });
   }
 };
+
 
 export const trashTask = async (req, res) => {
   try {
