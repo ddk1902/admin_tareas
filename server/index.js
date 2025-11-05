@@ -35,6 +35,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 
+app.use((req, res, next) => {
+  console.log("🌍 Petición recibida desde:", req.headers.origin);
+  console.log("➡️ Ruta:", req.method, req.originalUrl);
+  next();
+});
+
 // ✅ Aquí montamos las rutas correctamente
 app.use("/api", routes);
 
