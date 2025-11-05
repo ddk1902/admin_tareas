@@ -6,9 +6,8 @@ console.log("🌍 Base API:", import.meta.env.VITE_APP_BASE_URL);
 
 export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: `${API_URI}/api`,
-    credentials: "include", // 👈 Debe ir dentro de este objeto
+    baseUrl: `${import.meta.env.VITE_APP_BASE_URL}/api`,
+    credentials: "include",   // 👈 necesario
   }),
-  tagTypes: [],
-  endpoints: (builder) => ({}),
+  endpoints: () => ({}),
 });
