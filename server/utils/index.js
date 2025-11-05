@@ -21,8 +21,8 @@ export const createJWT = (res, userId) => {
 
   res.cookie("token", token, {
     httpOnly: true,
-    secure: true,      // ✅ SIEMPRE true en Render
-    sameSite: "none",  // ✅ Necesario para cruzar entre Vercel y Render
+    secure: true,      // 
+    sameSite: "none",  // 
     maxAge: 24 * 60 * 60 * 1000, // 1 día
   });
 };

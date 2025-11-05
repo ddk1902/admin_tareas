@@ -54,7 +54,7 @@ const TaskTable = ({ tasks }) => {
         <th className='py-2'>Título de la tarea</th>
         <th className='py-2'>Prioridad</th>
         <th className='py-2'>Responsable(s)</th>
-        <th className='py-4 '>Vence:</th>
+        <th className='py-4 '>Vence/Venció:</th>
       </tr>
     </thead>
   );
