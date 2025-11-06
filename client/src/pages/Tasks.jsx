@@ -12,7 +12,7 @@ import BoardView from "../components/BoardView";
 import Table from "../components/task/Table";
 import AddTask from "../components/task/AddTask";
 import { useGetAllTaskQuery } from "../redux/slices/api/taskApiSlice";
-
+import mongoose from "mongoose";
 const TABS = [
   { title: "Mosaico", icon: <MdGridView /> },
   { title: "Lista", icon: <FaList /> },
