@@ -19,7 +19,7 @@ import { PiEquals} from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { useUpdateTaskMutation } from "../redux/slices/api/taskApiSlice";
 import { useTrashTaskMutation } from "../redux/slices/api/taskApiSlice";
-
+import { toast } from "react-hot-toast";
 
 // Configura moment para usar español globalmente
 moment.locale("es");
@@ -55,16 +55,21 @@ const TaskTable = ({ tasks, user }) => {
   };
 
   // 🔹 Editar tarea (ejemplo: cambiar estado)
-  const handleUpdateTask = async (id, data) => {
-    try {
-      const result = await updateTask({ id, data }).unwrap();
-      console.log("✅ Tarea actualizada:", result);
-      toast.success("Tarea actualizada correctamente");
-    } catch (err) {
-      console.error("❌ Error al actualizar la tarea:", err);
-      toast.error("No se pudo actualizar la tarea");
-    }
-  };
+const handleUpdateTask = async (id, data) => {
+  console.log("🧩 ID recibido:", id);
+  console.log("🧩 Datos enviados:", data);
+
+  if (!id) {
+    console.error("❌ Error: ID de tarea indefinido");
+    return;
+  }
+  try {
+    const result = await updateTask({ id, data }).unwrap();
+    toast.success("Tarea actualizada correctamente");
+  } catch (err) {
+    console.error("❌ Error al actualizar la tarea:", err);
+  }
+};
 
   // 🔹 Eliminar tarea
   const handleDeleteTask = async (id) => {
