@@ -69,7 +69,7 @@ const handleUpdateTask = async (id, data) => {
   } catch (err) {
     console.error("❌ Error al actualizar la tarea:", err);
   }
-};
+ };
 
   // 🔹 Eliminar tarea
   const handleDeleteTask = async (id) => {
@@ -167,6 +167,7 @@ const handleUpdateTask = async (id, data) => {
       </tr>
     );
   };
+  console.log("🧾 Tareas que llegan a TaskTable:", tasks);
 
   return (
     <div className="w-full bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded">
