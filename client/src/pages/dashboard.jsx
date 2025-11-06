@@ -19,7 +19,7 @@ import { PiEquals} from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { useUpdateTaskMutation } from "../redux/slices/api/taskApiSlice";
 import { useTrashTaskMutation } from "../redux/slices/api/taskApiSlice";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 
 // Configura moment para usar español globalmente
 moment.locale("es");
@@ -155,7 +155,7 @@ const handleUpdateTask = async (id, data) => {
               {/* 🗑️ Botón eliminar */}
               <button
                 className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
-                onClick={() => handleDeleteTask(task._id)}
+                onClick={() => handleUpdateTask(task._id || task.id, { stage: "pendiente" })}
               >
                 Eliminar
               </button>
