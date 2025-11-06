@@ -17,6 +17,10 @@ import moment from "moment";
 import "moment/locale/es"; // Importa la localización en español
 import { PiEquals} from "react-icons/pi";
 import { useSelector } from "react-redux";
+import { useUpdateTaskMutation } from "../redux/slices/api/taskApiSlice";
+import { useDeleteTaskMutation } from "../redux/slices/api/taskApiSlice";
+
+
 // Configura moment para usar español globalmente
 moment.locale("es");
 // Personaliza los textos relativos
@@ -39,13 +43,40 @@ moment.updateLocale("es", {
   },
 });
 
+const TaskTable = ({ tasks, user }) => {
+  const [updateTask] = useUpdateTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
 
-const TaskTable = ({ tasks,user }) => {
   const ICONS = {
     alta: <MdKeyboardDoubleArrowUp />,
     media: <MdKeyboardArrowUp />,
     baja: <MdKeyboardArrowDown />,
-    normal: <PiEquals/>
+    normal: <PiEquals />,
+  };
+
+  // 🔹 Editar tarea (ejemplo: cambiar estado)
+  const handleUpdateTask = async (id, data) => {
+    try {
+      const result = await updateTask({ id, data }).unwrap();
+      console.log("✅ Tarea actualizada:", result);
+      toast.success("Tarea actualizada correctamente");
+    } catch (err) {
+      console.error("❌ Error al actualizar la tarea:", err);
+      toast.error("No se pudo actualizar la tarea");
+    }
+  };
+
+  // 🔹 Eliminar tarea
+  const handleDeleteTask = async (id) => {
+    if (!confirm("¿Seguro que deseas eliminar esta tarea?")) return;
+    try {
+      const result = await deleteTask(id).unwrap();
+      console.log("🗑️ Tarea eliminada:", result);
+      toast.success("Tarea eliminada correctamente");
+    } catch (err) {
+      console.error("❌ Error al eliminar la tarea:", err);
+      toast.error("No se pudo eliminar la tarea");
+    }
   };
 
   const TableHeader = () => (
@@ -55,15 +86,13 @@ const TaskTable = ({ tasks,user }) => {
         <th className="py-2">Prioridad</th>
         <th className="py-2">Responsable(s)</th>
         <th className="py-4">Vence/Venció:</th>
-        {/* Solo mostrar columna Acciones si puede editar */}
         <th className="py-2">Acciones</th>
       </tr>
     </thead>
   );
 
-    const TableRow = ({ task }) => {
-    // Verificar si el usuario tiene permisos
-    const canEdit = user?.isAdmin || task.team.some(m => m._id === user?._id);
+  const TableRow = ({ task }) => {
+    const canEdit = user?.isAdmin || task.team.some((m) => m._id === user?._id);
 
     return (
       <tr className="border-b border-gray-300 text-gray-600 hover:bg-gray-300/10">
@@ -105,15 +134,25 @@ const TaskTable = ({ tasks,user }) => {
           </span>
         </td>
 
-        {/* Solo mostrar acciones si el usuario puede editar */}
         <td className="py-2">
           {canEdit ? (
             <div className="flex gap-2">
-              <button className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600">
+              {/* 📝 Botón editar */}
+              <button
+                className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+                onClick={() =>
+                  handleUpdateTask(task._id, { stage: "pendiente" })
+                }
+              >
                 Editar
               </button>
-              <button className="px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600">
-                En progreso
+
+              {/* 🗑️ Botón eliminar */}
+              <button
+                className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
+                onClick={() => handleDeleteTask(task._id)}
+              >
+                Eliminar
               </button>
             </div>
           ) : (
@@ -137,6 +176,7 @@ const TaskTable = ({ tasks,user }) => {
     </div>
   );
 };
+
 
 const Dashboard = () => {
   const { user } = useSelector((state) => state.auth);
