@@ -19,7 +19,7 @@ import { PiEquals} from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { useUpdateTaskMutation } from "../redux/slices/api/taskApiSlice";
 import { useTrashTaskMutation } from "../redux/slices/api/taskApiSlice";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 // Configura moment para usar español globalmente
 moment.locale("es");
