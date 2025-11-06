@@ -397,3 +397,37 @@ export const deleteRestoreTask = async (req, res) => {
     return res.status(400).json({ status: false, message: error.message });
   }
 };
+
+export const addComment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { text } = req.body;
+    const { userId } = req.user;
+
+    if (!text || text.trim() === "") {
+      return res
+        .status(400)
+        .json({ status: false, message: "El comentario no puede estar vacío." });
+    }
+
+    const task = await Task.findById(id).populate("comments.by", "name email");
+
+    if (!task)
+      return res
+        .status(404)
+        .json({ status: false, message: "Tarea no encontrada." });
+
+    const comment = { text, by: userId };
+    task.comments.push(comment);
+    await task.save();
+
+    res.status(200).json({
+      status: true,
+      message: "Comentario agregado correctamente.",
+      comment,
+    });
+  } catch (error) {
+    console.error("❌ Error en addComment:", error);
+    res.status(500).json({ status: false, message: "Error interno del servidor." });
+  }
+};

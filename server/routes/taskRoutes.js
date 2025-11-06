@@ -1,4 +1,5 @@
 import express from "express";
+import { addComment } from "../controllers/taskController.js";
 import {
   createSubTask,
   createTask,
@@ -21,6 +22,7 @@ router.post("/create", protectRoute, isAdminRoute, createTask);
 router.post("/duplicate/:id", protectRoute, isAdminRoute, duplicateTask);
 router.put("/create-subtask/:id", protectRoute, isAdminRoute, createSubTask);
 router.put("/:id", protectRoute, isAdminRoute, trashTask);
+router.post("/:id/comment", protectRoute, addComment);
 router.delete(
   "/delete-restore/:id?",
   protectRoute,

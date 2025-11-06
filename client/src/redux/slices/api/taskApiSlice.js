@@ -83,6 +83,14 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Tasks'],
   }),
+  addComment: builder.mutation({
+  query: ({ id, text }) => ({
+    url: `/task/${id}/comment`,
+    method: "POST",
+    body: { text },
+    credentials: "include",
+  }),
+}),
   }),
 });
 
@@ -113,9 +121,12 @@ apiSlice.injectEndpoints({
   }),
 });
 
+
+
 // Exportar el hook generado
 export const { useGetDashboardStatsQuery,
   useGetAllTaskQuery,
+  useAddCommentMutation,
   useCreateTaskMutation,
   useDuplicateTaskMutation,
   useTrashTaskMutation,

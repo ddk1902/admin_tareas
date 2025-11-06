@@ -37,6 +37,30 @@ const Tasks = () => {
     search: "",
    
   });
+   const taskSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  stage: { type: String, default: "pendiente" },
+  date: Date,
+  priority: String,
+  team: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  assets: [],
+  activities: [
+    {
+      type: { type: String },
+      activity: String,
+      by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      date: { type: Date, default: Date.now },
+    },
+  ],
+  comments: [
+    {
+      text: { type: String, required: true },
+      by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      date: { type: Date, default: Date.now },
+    },
+  ],
+  isTrashed: { type: Boolean, default: false },
+});
 
   // Depuración: Registrar los datos recibidos
   //console.log("Datos recibidos desde el backend:", data);
@@ -84,6 +108,8 @@ const Tasks = () => {
       <AddTask open={open} setOpen={setOpen} />
     </div>
   );
+   
+
 };
 
 export default Tasks;
