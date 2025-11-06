@@ -18,7 +18,7 @@ import "moment/locale/es"; // Importa la localización en español
 import { PiEquals} from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { useUpdateTaskMutation } from "../redux/slices/api/taskApiSlice";
-import { useDeleteTaskMutation } from "../redux/slices/api/taskApiSlice";
+import { useTrashTaskMutation } from "../redux/slices/api/taskApiSlice";
 
 
 // Configura moment para usar español globalmente
@@ -45,7 +45,7 @@ moment.updateLocale("es", {
 
 const TaskTable = ({ tasks, user }) => {
   const [updateTask] = useUpdateTaskMutation();
-  const [deleteTask] = useDeleteTaskMutation();
+  const [deleteTask] =  useTrashTaskMutation();
 
   const ICONS = {
     alta: <MdKeyboardDoubleArrowUp />,
